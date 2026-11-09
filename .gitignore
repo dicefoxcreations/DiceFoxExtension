@@ -1,0 +1,37 @@
+*.mhtml
+*.json.gz
+*.zip
+*.log
+.DS_Store
+Thumbs.db
+exports/
+archive/
+/reader/
+private-profiles/
+
+node_modules/
+
+__pycache__/
+*.pyc
+test-output/
+
+# Development only — kept in the private repository DiceFoxExtension-dev
+# (`.dev.git`, see `./dev-git`), not published here.
+/.dev.git/
+/dev-git
+/README.dev.md
+/ANALYSE_DNDBEYOND.md
+/CHANGELOG.md
+/CONTRIBUTING.md
+/DESIGN.md
+/PROFILE_FORMAT.md
+/QUICK_START.txt
+/profile_schema.json
+/package.json
+/package-lock.json
+/docs/
+/examples/
+/tests/
+/tools/
+/test_*.html
+/extension/aw/template-provenance.json

@@ -1,0 +1,47 @@
+[
+  {
+    "type": "monster",
+    "name": "Monsters",
+    "text": "<list type=monster style=cards filter=\"Creature type\" show=\"Image, Challenge rating, Creature type\">"
+  },
+  {
+    "type": "spell",
+    "name": "Spells",
+    "text": "<list type=spell style=table filter=Level show=\"Level, School, Casting time, Source\" sort=\"Level, name\">"
+  },
+  {
+    "type": "item",
+    "name": "Items",
+    "text": "## Owned by the party\n<list type=item where=\"Owner=*\" style=table filter=Owner show=\"Type, Rarity, Owner, Acquired\">\n\n## Weapons\n<list type=weapon style=table filter=Category show=\"Type, Category, Rarity, Cost, Owner\">\n\n## Armor\n<list type=armor style=table filter=Category show=\"Type, Category, Rarity, Cost, Owner\">\n\n## Wondrous items\n<list type=wondrous-item style=table filter=Category show=\"Type, Category, Rarity, Cost, Owner\">\n\n## Potions\n<list type=potion style=table filter=Category show=\"Type, Category, Rarity, Cost, Owner\">\n\n## Equipment\n<list type=gear style=table filter=Category show=\"Type, Category, Rarity, Cost, Owner\">"
+  },
+  {
+    "type": "feat",
+    "name": "Feats",
+    "text": "<list type=feat style=table filter=Category show=\"Category, Prerequisite, Source\">"
+  },
+  {
+    "type": "background",
+    "name": "Backgrounds",
+    "text": "<list type=background style=table show=\"Ability scores, Feat, Source\">"
+  },
+  {
+    "type": "species",
+    "name": "Species",
+    "text": "<list type=species style=cards show=\"Image, Creature type, Size, Source\">"
+  },
+  {
+    "type": "class",
+    "name": "Classes",
+    "text": "<list type=class style=cards show=\"Image, Primary ability, Hit point die\">"
+  },
+  {
+    "type": "book",
+    "name": "Books",
+    "text": "<list type=Book style=cards columns=3 show=\"Cover, Author, Publisher, Edition, Year\" filter=Kind>"
+  },
+  {
+    "type": "book-chapter",
+    "name": "Chapters",
+    "text": "<list type=\"Book chapter\" style=table show=\"Book, Order\" filter=Book sort=\"Book, Order, name\">"
+  }
+]

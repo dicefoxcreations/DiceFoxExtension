@@ -1,0 +1,34 @@
+(() => {
+  'use strict';
+  if(globalThis.__LWL_PICKER__)return;
+  globalThis.__LWL_PICKER__=true;
+  let dispose=()=>{};
+  chrome.runtime.onMessage.addListener((msg,_sender,reply)=>{
+    if(msg?.type!=='LWL_GUIDED_PICK')return false;
+    dispose();
+    const host=document.createElement('div');host.dataset.lwlPicker='';
+    host.style.cssText='all:initial;position:fixed;inset:0;z-index:2147483647;pointer-events:none';
+    const shadow=host.attachShadow({mode:'open'});
+    shadow.innerHTML='<style>:host{font:14px/1.45 system-ui;color:#142d26}.box{position:fixed;border:3px solid #168c68;background:#168c681a;box-sizing:border-box;pointer-events:none}.panel{font:14px/1.45 system-ui,sans-serif;color:#142d26;position:fixed;left:16px;bottom:16px;width:min(440px,calc(100vw - 32px));box-sizing:border-box;background:white;border:1px solid #91b7aa;border-radius:12px;padding:18px;box-shadow:0 6px 30px #0005;pointer-events:auto}h2{font-size:18px;margin:0 0 8px}p{margin:8px 0;overflow-wrap:anywhere}button{font:inherit;padding:8px 10px;margin:4px 4px 0 0;border:1px solid #abc1b9;border-radius:6px;background:#f4f8f6;cursor:pointer}button:disabled{opacity:.5}#use{background:#176b50;color:white}small{color:#50685f}</style><div class="box" hidden></div><section class="panel" role="dialog" aria-label="DiceFox"><h2></h2><p id="help"></p><p id="sample"></p><small></small><div><button id="parent"></button><button id="child"></button><button id="use" disabled></button><button id="cancel"></button></div></section>';
+    const de=msg.language==='de',say=(en,deText)=>de?deText:en;
+    shadow.querySelector('h2').textContent=msg.label||'DiceFox';
+    shadow.querySelector('#help').textContent=say('Click the requested element. Use “Larger area” to include the surrounding section.','Klicke auf das gesuchte Element. Mit „Größerer Bereich“ kannst du den umgebenden Abschnitt auswählen.');
+    for(const [id,en,dt] of [['parent','Larger area','Größerer Bereich'],['child','Smaller area','Kleinerer Bereich'],['use','Use this selection','Auswahl übernehmen'],['cancel','Cancel','Abbrechen']])shadow.getElementById(id).textContent=say(en,dt);
+    shadow.querySelector('small').textContent=say('Escape cancels. Page links stay inactive while selecting.','Escape bricht ab. Seitenlinks bleiben während der Auswahl inaktiv.');
+    document.documentElement.append(host);
+    let selected=null,hover=null,history=[];
+    const draw=()=>{const el=selected||hover,box=shadow.querySelector('.box');box.hidden=!el;if(el){const r=el.getBoundingClientRect();Object.assign(box.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});}};
+    const describe=()=>{draw();shadow.getElementById('use').disabled=!selected;if(!selected)return;try{const d=LWLGuidedRules.describe(selected,msg.field);shadow.getElementById('sample').textContent=d.tag+' · '+d.count+say(' matches · ',' Treffer · ')+d.characters+say(' characters',' Zeichen')+' — '+d.text;}catch(e){shadow.getElementById('sample').textContent=e.message;shadow.getElementById('use').disabled=true;}};
+    const inside=ev=>ev.composedPath().includes(host);
+    const move=ev=>{if(inside(ev)||selected)return;hover=ev.target;draw();};
+    const click=ev=>{if(inside(ev))return;ev.preventDefault();ev.stopImmediatePropagation();selected=ev.target;history=[];describe();};
+    const key=ev=>{if(ev.key==='Escape'){ev.preventDefault();dispose();}else if(ev.key==='Enter'&&!inside(ev)&&selected){ev.preventDefault();shadow.getElementById('use').click();}};
+    dispose=()=>{document.removeEventListener('pointermove',move,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',key,true);window.removeEventListener('scroll',draw,true);window.removeEventListener('resize',draw);host.remove();dispose=()=>{};};
+    shadow.getElementById('parent').onclick=()=>{if(selected?.parentElement&&selected.parentElement!==document.documentElement){history.push(selected);selected=selected.parentElement;describe();}};
+    shadow.getElementById('child').onclick=()=>{if(history.length){selected=history.pop();describe();}};
+    shadow.getElementById('cancel').onclick=()=>dispose();
+    shadow.getElementById('use').onclick=async()=>{try{const result=LWLGuidedRules.describe(selected,msg.field);await chrome.storage.local.set({lwl_guided_result:{session:msg.session,field:msg.field,result,at:Date.now()}});dispose();}catch(e){shadow.getElementById('sample').textContent=e.message;}};
+    document.addEventListener('pointermove',move,true);document.addEventListener('click',click,true);document.addEventListener('keydown',key,true);window.addEventListener('scroll',draw,true);window.addEventListener('resize',draw);
+    reply({ok:true});return false;
+  });
+})();

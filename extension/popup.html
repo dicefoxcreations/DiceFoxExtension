@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DiceFox · D&D Beyond</title><link rel="icon" href="icons/icon32.png"><link rel="stylesheet" href="popup.css"><link rel="stylesheet" href="selection.css"></head>
+<body class="selection">
+<header class="head"><img src="icons/fox64.png" alt="" width="40" height="40"><div><h1>DiceFox <small id="version"></small></h1><p id="tagline" class="muted"></p></div></header>
+<main>
+ <p id="intro"></p>
+ <div id="status" class="status" role="alert" aria-live="polite"></div>
+ <div id="categories" class="categories" aria-live="polite"></div>
+ <p id="appStatus" class="muted" aria-live="polite"></p>
+</main>
+<footer class="selection-footer"><div><strong id="selectedCount"></strong><p id="selectionHint" class="muted"></p></div><button id="start" class="primary" type="button" disabled></button></footer>
+<dialog id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle"></h2><button id="closeExport" type="button"></button></div><iframe id="exportFrame" title="AnotherWorldbuilder export"></iframe></dialog>
+<script src="url_utils.js"></script><script src="providers/registry.js"></script><script src="providers/dndbeyond.js"></script><script src="i18n.js"></script><script src="aw_bridge.js"></script><script src="popup.js"></script>
+</body></html>

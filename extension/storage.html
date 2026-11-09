@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DiceFox – Storage</title><link rel="stylesheet" href="runner.css"><link rel="stylesheet" href="storage.css"><link rel="stylesheet" href="theme.css"></head>
+<body><main>
+<header class="page-header"><div><a class="brand" href="runner.html">DiceFox</a><h1 data-i18n="storageManage"></h1><p class="muted" data-i18n="storageExplanation"></p></div><span id="version" class="version"></span></header>
+<div id="notice" role="status" aria-live="polite"></div>
+<section class="panel storage-main">
+  <div class="heading"><div><span class="label" data-i18n="storageBrowser"></span><strong id="totalBytes" class="storage-total">–</strong></div><button id="refresh" data-i18n="storageRefresh"></button></div>
+  <div class="metrics storage-metrics"><div><strong id="localBytes">–</strong><span data-i18n="storageContent"></span></div><div><strong id="resourceBytes">–</strong><span data-i18n="storageResources"></span></div><div><strong id="writeBytes">–</strong><span data-i18n="pendingWrites"></span></div></div>
+  <p class="muted" data-i18n="storageEstimate"></p>
+  <label class="scope-label"><span data-i18n="profile"></span><select id="scope"></select></label><p id="scopeInfo" class="muted"></p>
+  <div id="busyNotice" class="busy-notice" hidden><p id="busyReason" role="status"></p><div class="actions"><button id="stopSync" data-i18n="storageStopSync"></button><a href="runner.html" data-i18n="storageBack"></a></div></div>
+  <div class="cleanup-choice"><div><h2 data-i18n="storageResources"></h2><p class="muted" data-i18n="storageResourceHelp"></p></div><button id="resources" data-i18n="storageClearResources"></button></div>
+  <div class="cleanup-choice destructive"><div><h2 data-i18n="storageDeleteContent"></h2><p class="muted" data-i18n="storageResetHelp"></p></div><button id="reset" data-i18n="storageReset"></button></div>
+</section>
+<details class="panel disclosure"><summary data-i18n="storageDetails"></summary><div class="disclosure-body">
+  <h2 data-i18n="storageCleanup"></h2><div class="actions"><button id="unused" data-i18n="storageUnused"></button><button id="discardProfile" data-i18n="storageDiscardProfile"></button></div>
+  <label class="check-setting"><input type="checkbox" id="autoCleanup"><span data-i18n="storageAuto"></span></label><p class="muted" data-i18n="storageAutoHelp"></p>
+  <div class="table-scroll"><table><thead><tr><th data-i18n="profile"></th><th data-i18n="storageContent"></th><th data-i18n="storageResources"></th><th data-i18n="pendingWrites"></th><th data-i18n="storageTotal"></th></tr></thead><tbody id="profiles"></tbody></table></div>
+  <h2 data-i18n="storageTemporary"></h2><p id="temporaryInfo" class="muted"></p><div class="actions"><button id="temporary" data-i18n="storageClearTemporary"></button><button id="discardAll" data-i18n="storageDiscardAll"></button></div>
+  <div class="table-scroll"><table><thead><tr><th data-i18n="storageFile"></th><th data-i18n="profile"></th><th data-i18n="folderHeading"></th><th data-i18n="storageSize"></th></tr></thead><tbody id="writes"></tbody></table></div>
+</div></details>
+<footer><a href="runner.html" data-i18n="storageBack"></a></footer>
+</main><script src="i18n.js"></script><script src="lwl_idb.js"></script><script src="storage.js"></script></body></html>

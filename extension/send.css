@@ -1,0 +1,38 @@
+/* The send page: the popup's look, a page wide. */
+html, body { width: auto; min-width: 0; max-height: none; overflow: visible; }
+body.send { min-height: 100vh; }
+.send main { max-width: 640px; margin: 0 auto; padding: 22px 16px; }
+.send .head { justify-content: center; }
+.counts { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; margin: 4px 0 10px; }
+.counts div { background: var(--sunken); border-radius: 8px; padding: 7px 10px; }
+.counts b { display: block; font-weight: 700; font-size: 18px; }
+.counts span { font-size: 12px; color: var(--muted); }
+.warn { background: var(--danger-soft); border: 1px solid var(--danger-line); color: var(--danger-text); border-radius: 9px; padding: 8px 10px; font-size: 12.5px; }
+.bar { height: 8px; background: var(--raised); border-radius: 99px; overflow: hidden; margin: 12px 0 6px; }
+.bar div { height: 100%; width: 0; background: var(--accent); transition: width .25s; }
+.log summary { cursor: pointer; color: var(--herb); font-weight: 600; font-size: 12.5px; }
+.log pre { max-height: 260px; overflow: auto; font-size: 11.5px; white-space: pre-wrap; margin: 8px 0 0; }
+.selection-list { max-height: 320px; overflow: auto; margin-top: 10px; }
+.selection-list label { display: flex; gap: 8px; align-items: start; padding: 6px 2px; }
+.selection-list input, #partialField input { width: auto; flex: 0 0 auto; accent-color: var(--herb); }
+.selection-list small { color: var(--muted); }
+#typeRows { max-height: 200px; overflow: auto; padding-left: 20px; font-size: 12px; }
+#partialField { display: block; }
+#partialField[hidden] { display: none; }
+.send input[type=search] { min-width: 0; flex: 1; }
+body.embedded { min-height:0; }
+.embedded .head, .embedded #selectionCard, .embedded .foot, .embedded #captureStatusLink { display:none!important; }
+.embedded main { padding:12px; gap:10px; }
+.embedded #worldHelp { font-size:12px; }
+
+.check { display:flex; align-items:center; gap:8px; margin:4px 0 10px; font-size:13px; }
+.check input { width:auto; margin:0; }
+.check[hidden] { display:none; }
+/* One row per list: the one being read stands out, those done fade. */
+.lists { list-style:none; margin:4px 0 8px; padding:0; display:grid; grid-template-columns:1fr auto; gap:3px 14px; font-size:13px; }
+.lists li { display:contents; }
+.lists li span:last-child { text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); }
+.lists li.current span { color:var(--accent); font-weight:600; }
+.lists li.done span { color:var(--muted); }
+#gone ul { margin:6px 0; padding-left:18px; max-height:220px; overflow:auto; font-size:12px; }
+#gone summary { cursor:pointer; font-size:13px; }

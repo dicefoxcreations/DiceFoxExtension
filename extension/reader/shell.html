@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>DiceFox Library</title>
+<link rel="stylesheet" href="app.css">
+<script>
+  /* Apply the stored theme before first paint to avoid a flash. */
+  try {
+    var t = localStorage.getItem("lwl-theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+<div id="app" class="app">
+  <nav id="libraryBar" class="library-bar" aria-label="Local library navigation"></nav>
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">L</div>
+    <div class="brand-text">
+      <div class="brand-name" id="brandName">DiceFox Library</div>
+      <div class="brand-sub" id="brandSub">offline</div>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <button class="icon-btn menu-btn" id="menuBtn" title="Menu" aria-label="Menu">&#9776;</button>
+    <div class="searchbox">
+      <span class="icon" aria-hidden="true">&#9906;</span>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" aria-label="Search">
+      <kbd>/</kbd>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="icon-btn" id="themeBtn" title="Theme" aria-label="Theme">&#9681;</button>
+  </header>
+
+  <nav class="nav" id="nav" aria-label="Library"></nav>
+
+  <main class="main" id="main" tabindex="-1">
+    <div class="skeleton">Loading library&hellip;</div>
+  </main>
+</div>
+
+<script src="data/index.js"></script>
+<script src="../../.lwl-library-directory.js"></script>
+<script src="presentation.js"></script>
+<script src="model.js"></script>
+<script src="references.js"></script>
+<script src="catalog.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1491 @@
+{
+  "schemaVersion": 1,
+  "profileVersion": "4.0.8",
+  "name": "D&D Beyond",
+  "description": "Supported D&D Beyond export: Library books and Rules, with Classes/Subclasses and Rules Glossary references.",
+  "origin": "https://www.dndbeyond.com",
+  "canonicalization": {
+    "pathAliases": {
+      "/sources/dnd/free-rules": "/sources/dnd/br-2024"
+    }
+  },
+  "skipUrlPatterns": [
+    "/forums",
+    "/posts",
+    "/comments",
+    "/members/",
+    "/profile/",
+    "/marketplace",
+    "/checkout",
+    "/campaigns",
+    "/characters",
+    "/encounters",
+    "/my-",
+    "/account"
+  ],
+  "unavailableUrlPatterns": [
+    "^https://marketplace\\.dndbeyond\\.com/",
+    "^https://www\\.dndbeyond\\.com/(?:en/?)?(?:[?#].*)?$"
+  ],
+  "sources": [
+    {
+      "id": "rules-glossary",
+      "name": "Rules Glossary",
+      "type": "glossary",
+      "startUrl": "https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "discoveryMode": "configured",
+      "contentSelector": "article, [role='main']",
+      "detailSelector": "article.p-article",
+      "followDepth": 0,
+      "maxItems": 1,
+      "availability": {
+        "requiredSelector": ".p-article-content"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "pageSelector": "#site-main",
+      "providerSource": "rules-glossary",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "dependencies": [],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "glossary": {
+        "headingSelector": ".p-article-content h3[id]"
+      }
+    },
+    {
+      "id": "my-library",
+      "name": "Library · Books",
+      "type": "collection",
+      "startUrl": "https://www.dndbeyond.com/en/library?ownership=owned",
+      "readerGroup": "library",
+      "enabledByDefault": true,
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main'], main",
+      "detailSelector": "article.p-article",
+      "detailExcludeSelectors": [
+        ".comment-container",
+        ".ddb-comments",
+        ".social-share",
+        ".subscribe-callout",
+        ".marketplace-callout",
+        ".homebrew-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "navigationScope": "itemPrefix",
+      "followDepth": 3,
+      "maxItems": 5000,
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "itemUrlPatterns": [
+        "/sources/(?:dnd/)?[^/?#]+/?(?:[?#].*)?$"
+      ],
+      "itemLinkSelector": "main a[class*=\"SourceCard_sourceTitle\"]",
+      "availability": {
+        "requiredSelector": "article.p-article .p-article-content"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "pageSelector": "#site-main",
+      "providerSource": "my-library",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "itemContainerSelector": "[class*=\"SourceCard_source__\"]",
+      "itemTitleSelector": "a[class*=\"SourceCard_sourceTitle\"]",
+      "itemCoverSelector": "img[class*=\"SourceCard_image\"]",
+      "navigationSelector": "article.p-article a[href], .compendium-toc a[href], .quick-menu a[href]"
+    },
+    {
+      "id": "classes",
+      "name": "Classes & Subclasses",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/classes",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/classes/[0-9]+-",
+        "^https://www\\.dndbeyond\\.com/subclasses/[0-9]+-[^/?#]+(?:[?#].*)?$",
+        "^https://www\\.dndbeyond\\.com/classes/[0-9]+-[^/]+/subclasses/[0-9]+-[^/?#]+(?:[?#].*)?$"
+      ],
+      "detailSelector": ".static-container-details",
+      "maxItems": 500,
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".static-container-details"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "rowSelector": ".listing-body .listing > li",
+        "controlsSelector": ".j-collapsible__search",
+        "searchSelector": "#collapsible-search-input",
+        "resetSelector": ".j-collapsible__search-clear",
+        "searchMode": "metadata",
+        "groupSelector": ".j-collapsible",
+        "groupTriggerSelector": ".j-collapsible__trigger",
+        "groupContentSelector": ".j-collapsible__content",
+        "groupClosedClass": "ddb-collapsible__content--closed",
+        "groupHeaderClosedClass": "ddb-collapsible__header--closed",
+        "styleKeepPatterns": [
+          "ddb-collapsible",
+          "listing-card"
+        ],
+        "resetHiddenClass": "ddb-collapsible-filter__clear--hidden"
+      },
+      "expandSelector": null,
+      "expandCards": false,
+      "pageSelector": "#site-main",
+      "providerSource": "classes",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "itemLinkSelector": "a.listing-card__link",
+      "itemTitleSelector": ".listing-card__title",
+      "relatedLinkSelector": ".static-container-details a[href*=\"/subclasses/\"]",
+      "relatedUrlPatterns": [
+        "^https://www\\.dndbeyond\\.com/subclasses/[0-9]+-[^/?#]+(?:[?#].*)?$",
+        "^https://www\\.dndbeyond\\.com/classes/[0-9]+-[^/]+/subclasses/[0-9]+-[^/?#]+(?:[?#].*)?$"
+      ],
+      "detailPageSelector": ".static-container-details",
+      "cardMetaFields": [
+        {
+          "key": "source",
+          "selector": ".listing-card__source"
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ]
+    },
+    {
+      "id": "backgrounds",
+      "name": "Backgrounds",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/backgrounds?filter-partnered-content=t",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/backgrounds/[0-9]+-"
+      ],
+      "detailSelector": ".details-container-background",
+      "filters": [
+        {
+          "selector": "#filter-partnered-content",
+          "type": "select",
+          "value": "t",
+          "waitMs": 200
+        }
+      ],
+      "maxItems": 1000,
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".details-container-background"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "controlsSelector": "form.listing-filters",
+        "searchSelector": "#filter-name",
+        "resetSelector": ".reset-button-container a",
+        "submitSelector": ".submit.button",
+        "paginationSelector": ".b-pagination-list",
+        "rowToggleSelector": ".list-row-indicator",
+        "expandedRowSelector": ".more-info",
+        "rowExpandedClass": "open",
+        "indicatorOpenClass": "open",
+        "indicatorClosedClass": "closed",
+        "advancedToggleSelector": "a.advanced-filters",
+        "advancedPanelSelector": ".adv-filter:not(.naxos):not(.reset-button-container)",
+        "advancedHiddenClass": "stevanus-aurelius",
+        "advancedOpenClass": "adv-filters-open",
+        "advancedOpenLabel": "Hide Advanced Filters",
+        "advancedClosedLabel": "Show Advanced Filters",
+        "sortSelector": "[data-sort-by]",
+        "styleKeepPatterns": [
+          "(?:^|,\\s*)[.#]select2",
+          "(?:\\.rarity|\\.name|\\.link)[^,{]*(?:common|uncommon|rare|legendary|artifact)"
+        ],
+        "rowSelector": ".listing-body .listing > li",
+        "sortFields": {
+          "requires-attunement": "attunement",
+          "spell-level": "level",
+          "spell-name": "name",
+          "casting-time": "casting",
+          "range": "range",
+          "duration": "duration"
+        },
+        "rowStateSelector": ".list-row",
+        "panelPlacement": "inside",
+        "previewUrlTemplate": "{url}/more-info"
+      },
+      "expandSelector": ".list-row",
+      "pageSelector": "#site-main",
+      "providerSource": "backgrounds",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "expandCards": false,
+      "cardMetaFields": [
+        {
+          "key": "source",
+          "selector": ".list-row-name-secondary-text"
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ]
+    },
+    {
+      "id": "species",
+      "name": "Species",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/species",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/species/[0-9]+-"
+      ],
+      "detailSelector": ".static-container-details",
+      "maxItems": 500,
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".static-container-details"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "rowSelector": ".listing-body .listing > li",
+        "controlsSelector": ".j-collapsible__search",
+        "searchSelector": "#collapsible-search-input",
+        "resetSelector": ".j-collapsible__search-clear",
+        "searchMode": "metadata",
+        "groupSelector": ".j-collapsible",
+        "groupTriggerSelector": ".j-collapsible__trigger",
+        "groupContentSelector": ".j-collapsible__content",
+        "groupClosedClass": "ddb-collapsible__content--closed",
+        "groupHeaderClosedClass": "ddb-collapsible__header--closed",
+        "styleKeepPatterns": [
+          "ddb-collapsible",
+          "listing-card"
+        ],
+        "resetHiddenClass": "ddb-collapsible-filter__clear--hidden"
+      },
+      "expandSelector": null,
+      "expandCards": false,
+      "pageSelector": "#site-main",
+      "providerSource": "species",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "itemLinkSelector": "a.listing-card__link",
+      "itemTitleSelector": ".listing-card__title",
+      "cardMetaFields": [
+        {
+          "key": "source",
+          "selector": ".listing-card__source"
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ]
+    },
+    {
+      "id": "feats",
+      "name": "Feats",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/feats?filter-partnered-content=t",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/feats/[0-9]+-"
+      ],
+      "detailSelector": ".details-container-feat",
+      "filters": [
+        {
+          "selector": "#filter-partnered-content",
+          "type": "select",
+          "value": "t",
+          "waitMs": 200
+        }
+      ],
+      "maxItems": 2000,
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".details-container-feat"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "controlsSelector": "form.listing-filters",
+        "searchSelector": "#filter-name",
+        "resetSelector": ".reset-button-container a",
+        "submitSelector": ".submit.button",
+        "paginationSelector": ".b-pagination-list",
+        "rowToggleSelector": ".list-row-indicator",
+        "expandedRowSelector": ".more-info",
+        "rowExpandedClass": "open",
+        "indicatorOpenClass": "open",
+        "indicatorClosedClass": "closed",
+        "advancedToggleSelector": "a.advanced-filters",
+        "advancedPanelSelector": ".adv-filter:not(.naxos):not(.reset-button-container)",
+        "advancedHiddenClass": "stevanus-aurelius",
+        "advancedOpenClass": "adv-filters-open",
+        "advancedOpenLabel": "Hide Advanced Filters",
+        "advancedClosedLabel": "Show Advanced Filters",
+        "sortSelector": "[data-sort-by]",
+        "styleKeepPatterns": [
+          "(?:^|,\\s*)[.#]select2",
+          "(?:\\.rarity|\\.name|\\.link)[^,{]*(?:common|uncommon|rare|legendary|artifact)"
+        ],
+        "rowSelector": ".listing-body .listing > li",
+        "sortFields": {
+          "requires-attunement": "attunement",
+          "spell-level": "level",
+          "spell-name": "name",
+          "casting-time": "casting",
+          "range": "range",
+          "duration": "duration"
+        },
+        "rowStateSelector": ".list-row",
+        "panelPlacement": "inside",
+        "filterTransport": "html",
+        "rowsTransport": "html",
+        "emptySelector": ".no-results",
+        "filterBindings": [
+          {
+            "name": "filter-partnered-content",
+            "field": "partnered-content",
+            "values": {
+              "f": "false"
+            },
+            "emptyValues": [
+              "t"
+            ],
+            "capture": false
+          }
+        ],
+        "previewUrlTemplate": "{url}/more-info"
+      },
+      "expandSelector": ".list-row",
+      "pageSelector": "#site-main",
+      "providerSource": "feats",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "itemLinkSelector": ".list-row-name-primary-text a.link",
+      "cardMetaFields": [
+        {
+          "key": "partnered-content",
+          "selector": ".i-partnered-content-small",
+          "presence": true,
+          "defaultValue": "false"
+        },
+        {
+          "key": "source",
+          "selector": ".list-row-name-secondary-text"
+        },
+        {
+          "key": "tags",
+          "selector": ".list-row-tags-primary-text"
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ],
+      "expandCards": false
+    },
+    {
+      "id": "spells",
+      "name": "Spells",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/spells?filter-partnered-content=t",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/spells/[0-9]+-"
+      ],
+      "detailSelector": ".detail-content",
+      "cardMetaFields": [
+        {
+          "key": "level",
+          "selector": ".spell-level"
+        },
+        {
+          "key": "casting",
+          "selector": ".spell-cast-time"
+        },
+        {
+          "key": "range",
+          "selector": ".spell-range"
+        },
+        {
+          "key": "duration",
+          "selector": ".spell-duration"
+        },
+        {
+          "key": "attack",
+          "selector": ".spell-attack-save"
+        },
+        {
+          "key": "damage",
+          "selector": ".spell-damage-effect"
+        },
+        {
+          "key": "school",
+          "selector": ".spell-name > span:nth-child(2) > span:first-child"
+        },
+        {
+          "key": "partnered-content",
+          "selector": ".i-partnered-content-small",
+          "presence": true,
+          "defaultValue": "false"
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ],
+      "pagination": {
+        "mode": "auto"
+      },
+      "maxItems": 5000,
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "itemLinkSelector": ".spell-name a.link",
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".detail-content"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "controlsSelector": "form.listing-filters",
+        "searchSelector": "#filter-search",
+        "resetSelector": ".reset-button-container a",
+        "submitSelector": ".submit.button",
+        "paginationSelector": ".b-pagination-list",
+        "rowToggleSelector": ".open-indicator span",
+        "expandedRowSelector": ".more-info",
+        "rowExpandedClass": "silas-fleetfoot",
+        "indicatorOpenClass": "minus",
+        "indicatorClosedClass": "plus",
+        "advancedToggleSelector": "a.advanced-filters",
+        "advancedPanelSelector": ".adv-filter:not(.naxos):not(.reset-button-container)",
+        "advancedHiddenClass": "stevanus-aurelius",
+        "advancedOpenClass": "adv-filters-open",
+        "advancedOpenLabel": "Hide Advanced Filters",
+        "advancedClosedLabel": "Show Advanced Filters",
+        "sortSelector": "[data-sort-by]",
+        "styleKeepPatterns": [
+          "(?:^|,\\s*)[.#]select2",
+          "(?:\\.rarity|\\.name|\\.link)[^,{]*(?:common|uncommon|rare|legendary|artifact)",
+          "\\.(?:more-info|ddb-statblock)(?:[\\w-]*)"
+        ],
+        "rowSelector": ".listing-body .listing > .info",
+        "filterBindings": [
+          {
+            "name": "filter-level",
+            "field": "level"
+          },
+          {
+            "name": "filter-school",
+            "field": "school"
+          },
+          {
+            "name": "filter-partnered-content",
+            "field": "partnered-content",
+            "values": {
+              "f": "false"
+            },
+            "emptyValues": [
+              "t"
+            ],
+            "capture": false
+          }
+        ],
+        "sortFields": {
+          "requires-attunement": "attunement",
+          "spell-level": "level",
+          "spell-name": "name",
+          "casting-time": "casting",
+          "range": "range",
+          "duration": "duration"
+        },
+        "filterTransport": "html",
+        "rowsTransport": "html",
+        "emptySelector": ".no-results",
+        "cycleControls": [
+          {
+            "selector": ".special-select-spell-components .special-select-item:nth-child(1)",
+            "name": "filter-verbal",
+            "values": [
+              "",
+              "t",
+              "f"
+            ],
+            "classes": {
+              "t": "t",
+              "f": "f"
+            }
+          },
+          {
+            "selector": ".special-select-spell-components .special-select-item:nth-child(2)",
+            "name": "filter-somatic",
+            "values": [
+              "",
+              "t",
+              "f"
+            ],
+            "classes": {
+              "t": "t",
+              "f": "f"
+            }
+          },
+          {
+            "selector": ".special-select-spell-components .special-select-item:nth-child(3)",
+            "name": "filter-material",
+            "values": [
+              "",
+              "t",
+              "f"
+            ],
+            "classes": {
+              "t": "t",
+              "f": "f"
+            }
+          }
+        ]
+      },
+      "expandSelector": ".info",
+      "pageSelector": "#site-main",
+      "providerSource": "spells",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "filters": [
+        {
+          "selector": "#filter-partnered-content",
+          "type": "select",
+          "value": "t",
+          "waitMs": 200
+        }
+      ],
+      "expandCards": false
+    },
+    {
+      "id": "equipment",
+      "name": "Equipment",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/equipment",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/equipment/[0-9]+-"
+      ],
+      "detailSelector": ".details-container-equipment, .detail-content, .p-article-content",
+      "pagination": {
+        "mode": "auto"
+      },
+      "maxItems": 5000,
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source-description, .source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".details-container-equipment, .detail-content, .p-article-content"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "controlsSelector": "form.listing-filters",
+        "searchSelector": "#filter-search",
+        "resetSelector": ".reset-button-container a",
+        "submitSelector": ".submit.button",
+        "paginationSelector": ".b-pagination-list",
+        "rowToggleSelector": ".list-row-indicator",
+        "expandedRowSelector": ".more-info",
+        "rowExpandedClass": "open",
+        "indicatorOpenClass": "open",
+        "indicatorClosedClass": "closed",
+        "advancedToggleSelector": "a.advanced-filters",
+        "advancedPanelSelector": ".adv-filter:not(.naxos):not(.reset-button-container)",
+        "advancedHiddenClass": "stevanus-aurelius",
+        "advancedOpenClass": "adv-filters-open",
+        "advancedOpenLabel": "Hide Advanced Filters",
+        "advancedClosedLabel": "Show Advanced Filters",
+        "sortSelector": "[data-sort-by]",
+        "styleKeepPatterns": [
+          "(?:^|,\\s*)[.#]select2",
+          "(?:\\.rarity|\\.name|\\.link)[^,{]*(?:common|uncommon|rare|legendary|artifact)"
+        ],
+        "rowSelector": ".listing-body .listing > li",
+        "sortFields": {
+          "requires-attunement": "attunement",
+          "spell-level": "level",
+          "spell-name": "name",
+          "casting-time": "casting",
+          "range": "range",
+          "duration": "duration"
+        },
+        "rowStateSelector": ".list-row",
+        "panelPlacement": "inside",
+        "searchMode": "metadata"
+      },
+      "expandSelector": ".list-row",
+      "pageSelector": "#site-main",
+      "providerSource": "equipment",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "cardMetaFields": [
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ]
+    },
+    {
+      "id": "magic-items",
+      "name": "Magic Items",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/magic-items?filter-partnered-content=t",
+      "readerGroup": "compendium",
+      "enabledByDefault": true,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/magic-items/[0-9]+-"
+      ],
+      "detailSelector": ".detail-content",
+      "cardMetaFields": [
+        {
+          "key": "rarity",
+          "selector": ".item-name .rarity"
+        },
+        {
+          "key": "type",
+          "selector": ".item-type .type"
+        },
+        {
+          "key": "subtype",
+          "selector": ".item-type .subtype"
+        },
+        {
+          "key": "attunement",
+          "selector": ".requires-attunement span"
+        },
+        {
+          "key": "tags",
+          "selector": ".notes span",
+          "multiple": true
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ],
+      "pagination": {
+        "mode": "auto"
+      },
+      "filters": [
+        {
+          "selector": "#filter-partnered-content",
+          "type": "select",
+          "value": "t",
+          "waitMs": 200
+        }
+      ],
+      "maxItems": 8000,
+      "itemLinkSelector": ".item-name a.link",
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".detail-content"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "controlsSelector": "form.listing-filters",
+        "searchSelector": "#filter-search",
+        "resetSelector": ".reset-button-container a",
+        "submitSelector": ".submit.button",
+        "paginationSelector": ".b-pagination-list",
+        "rowToggleSelector": ".open-indicator span",
+        "expandedRowSelector": ".more-info",
+        "rowExpandedClass": "silas-fleetfoot",
+        "indicatorOpenClass": "minus",
+        "indicatorClosedClass": "plus",
+        "advancedToggleSelector": "a.advanced-filters",
+        "advancedPanelSelector": ".adv-filter:not(.naxos):not(.reset-button-container)",
+        "advancedHiddenClass": "stevanus-aurelius",
+        "advancedOpenClass": "adv-filters-open",
+        "advancedOpenLabel": "Hide Advanced Filters",
+        "advancedClosedLabel": "Show Advanced Filters",
+        "sortSelector": "[data-sort-by]",
+        "styleKeepPatterns": [
+          "(?:^|,\\s*)[.#]select2",
+          "(?:\\.rarity|\\.name|\\.link)[^,{]*(?:common|uncommon|rare|legendary|artifact)"
+        ],
+        "filterBindings": [
+          {
+            "name": "filter-type",
+            "field": "type",
+            "emptyValues": [
+              "0"
+            ],
+            "selectedClass": "escobert-the-red",
+            "choiceSelector": ":scope > span"
+          },
+          {
+            "name": "filter-rarity",
+            "field": "rarity"
+          },
+          {
+            "name": "filter-requires-attunement",
+            "field": "attunement",
+            "values": {
+              "t": "Required",
+              "f": ""
+            }
+          }
+        ],
+        "rowSelector": ".listing-body .listing > .info",
+        "sortFields": {
+          "requires-attunement": "attunement",
+          "spell-level": "level",
+          "spell-name": "name",
+          "casting-time": "casting",
+          "range": "range",
+          "duration": "duration"
+        },
+        "filterTransport": "html"
+      },
+      "expandSelector": ".info",
+      "pageSelector": "#site-main",
+      "providerSource": "magic-items",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]"
+    },
+    {
+      "id": "monsters",
+      "name": "Monsters",
+      "type": "catalog",
+      "startUrl": "https://www.dndbeyond.com/monsters?filter-partnered-content=t",
+      "readerGroup": "compendium",
+      "enabledByDefault": false,
+      "catalogMode": "content",
+      "discoveryMode": "configured",
+      "contentSelector": "[role='main']",
+      "itemUrlPatterns": [
+        "/monsters/[0-9]+-"
+      ],
+      "detailSelector": ".detail-content, .mon-details, .mon-stat-block",
+      "pagination": {
+        "mode": "auto"
+      },
+      "maxItems": 8000,
+      "notes": "Maintained D&D Beyond adapter. Only the declared Library / Rules scope is exported.",
+      "metaFields": [
+        {
+          "key": "source",
+          "selector": ".source, .item-source, .spell-source"
+        },
+        {
+          "key": "tags",
+          "selector": ".tags .tag, .item-tags .tag",
+          "multiple": true
+        }
+      ],
+      "facetFilters": [
+        "*"
+      ],
+      "availability": {
+        "requiredSelector": ".detail-content, .mon-details, .mon-stat-block"
+      },
+      "captureMode": "page",
+      "navigationToggles": [
+        {
+          "selector": ".quick-menu-item-trigger",
+          "container": ".quick-menu-item",
+          "className": "quick-menu-item-closed",
+          "expandedClassName": "quick-menu-item-opened"
+        }
+      ],
+      "detailExcludeSelectors": [
+        ".homebrew-comments",
+        ".comment-container",
+        ".ddb-comments",
+        ".comments",
+        "#mega-menu-target",
+        ".ad-container",
+        "#footer-push",
+        ".page-header__extras",
+        ".page-heading__prefix",
+        ".page-heading__suffix",
+        ".user-actions",
+        ".p-article-byline",
+        ".ddb-site-header",
+        ".site-bar",
+        ".site-footer",
+        ".ddb-footer",
+        ".ddb-campaigns",
+        ".more-links",
+        ".p-article-footer",
+        ".variant-cta-container"
+      ],
+      "dependencies": [
+        "rules-glossary"
+      ],
+      "catalogView": {
+        "listSelector": ".listing-body .listing",
+        "controlsSelector": "form.listing-filters",
+        "searchSelector": "#filter-search",
+        "resetSelector": ".reset-button-container a",
+        "submitSelector": ".submit.button",
+        "paginationSelector": ".b-pagination-list",
+        "rowToggleSelector": ".open-indicator span",
+        "expandedRowSelector": ".more-info",
+        "rowExpandedClass": "silas-fleetfoot",
+        "indicatorOpenClass": "minus",
+        "indicatorClosedClass": "plus",
+        "advancedToggleSelector": "a.advanced-filters",
+        "advancedPanelSelector": ".adv-filter:not(.naxos):not(.reset-button-container)",
+        "advancedHiddenClass": "stevanus-aurelius",
+        "advancedOpenClass": "adv-filters-open",
+        "advancedOpenLabel": "Hide Advanced Filters",
+        "advancedClosedLabel": "Show Advanced Filters",
+        "sortSelector": "[data-sort-by]",
+        "styleKeepPatterns": [
+          "(?:^|,\\s*)[.#]select2",
+          "(?:\\.rarity|\\.name|\\.link)[^,{]*(?:common|uncommon|rare|legendary|artifact)",
+          "\\.more-info",
+          "\\.mon-stat-block",
+          "\\.mon-details",
+          "\\.ddb-blocked-content"
+        ],
+        "rowSelector": ".listing-body .listing > .info",
+        "sortFields": {
+          "requires-attunement": "attunement",
+          "spell-level": "level",
+          "spell-name": "name",
+          "casting-time": "casting",
+          "range": "range",
+          "duration": "duration",
+          "monster-challenge": "monster-challenge",
+          "monster-name": "name",
+          "monster-type": "type",
+          "monster-size": "monster-size",
+          "monster-alignment": "monster-alignment"
+        },
+        "filterBindings": [
+          {
+            "name": "filter-type",
+            "field": "type",
+            "emptyValues": [
+              "0"
+            ],
+            "selectedClass": "escobert-the-red",
+            "choiceSelector": ":scope > span"
+          },
+          {
+            "name": "filter-cr-min",
+            "field": "monster-challenge",
+            "operator": "gte"
+          },
+          {
+            "name": "filter-cr-max",
+            "field": "monster-challenge",
+            "operator": "lte"
+          },
+          {
+            "name": "filter-size",
+            "field": "monster-size"
+          },
+          {
+            "name": "filter-alignment",
+            "field": "monster-alignment"
+          },
+          {
+            "name": "filter-source",
+            "field": "source"
+          },
+          {
+            "name": "filter-armor-class-min",
+            "field": "armor-class",
+            "fallbackFields": [
+              "ac"
+            ],
+            "operator": "gte",
+            "emptyValues": [
+              "0"
+            ]
+          },
+          {
+            "name": "filter-armor-class-max",
+            "field": "armor-class",
+            "fallbackFields": [
+              "ac"
+            ],
+            "operator": "lte",
+            "emptyValues": [
+              "0"
+            ]
+          },
+          {
+            "name": "filter-average-hp-min",
+            "field": "hit-points",
+            "fallbackFields": [
+              "hp"
+            ],
+            "operator": "gte",
+            "emptyValues": [
+              "0"
+            ]
+          },
+          {
+            "name": "filter-average-hp-max",
+            "field": "hit-points",
+            "fallbackFields": [
+              "hp"
+            ],
+            "operator": "lte",
+            "emptyValues": [
+              "0"
+            ]
+          },
+          {
+            "name": "filter-partnered-content",
+            "field": "partnered-content",
+            "values": {
+              "f": "false"
+            },
+            "emptyValues": [
+              "t"
+            ],
+            "capture": false
+          }
+        ],
+        "previewUrlTemplate": "{url}/more-info",
+        "filterTransport": "html",
+        "rowsTransport": "html",
+        "emptySelector": ".no-results"
+      },
+      "expandSelector": ".info",
+      "pageSelector": "#site-main",
+      "providerSource": "monsters",
+      "providerId": "dndbeyond",
+      "previewSelector": "a.tooltip-hover, a[data-tooltip-href]",
+      "filters": [
+        {
+          "selector": "#filter-partnered-content",
+          "type": "select",
+          "value": "t",
+          "waitMs": 200
+        }
+      ],
+      "itemLinkSelector": ".monster-name a.link",
+      "cardMetaFields": [
+        {
+          "key": "partnered-content",
+          "selector": ".i-partnered-content-small",
+          "presence": true,
+          "defaultValue": "false"
+        },
+        {
+          "key": "source",
+          "selector": ".source"
+        },
+        {
+          "key": "type",
+          "selector": ".monster-type .type"
+        },
+        {
+          "key": "subtype",
+          "selector": ".monster-type .subtype"
+        },
+        {
+          "key": "monster-challenge",
+          "selector": ".monster-challenge"
+        },
+        {
+          "key": "monster-size",
+          "selector": ".monster-size"
+        },
+        {
+          "key": "monster-alignment",
+          "selector": ".monster-alignment"
+        },
+        {
+          "key": "monster-environment",
+          "selector": ".monster-environment"
+        },
+        {
+          "key": "monster-tags",
+          "selector": ".monster-tags"
+        },
+        {
+          "key": "legacy",
+          "selector": ".badge-label[aria-label=legacy]",
+          "presence": true,
+          "defaultValue": "false"
+        }
+      ],
+      "expandCards": false,
+      "numericFilters": [
+        {
+          "field": "armor-class",
+          "minName": "filter-armor-class-min",
+          "maxName": "filter-armor-class-max",
+          "minSelector": "#filter-armor-class-min",
+          "maxSelector": "#filter-armor-class-max",
+          "min": 0,
+          "initialMax": 32
+        },
+        {
+          "field": "hit-points",
+          "minName": "filter-average-hp-min",
+          "maxName": "filter-average-hp-max",
+          "minSelector": "#filter-average-hp-min",
+          "maxSelector": "#filter-average-hp-max",
+          "min": 0,
+          "initialMax": 1024
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "verified": false,
+    "verificationNote": "Version 3.0: live discovery checked on all ten supported roots on 2026-09-16; Rules Glossary and Cleric detail captured. Full Library and Rules recrawl not performed. See LIVE_TEST_READER_3.0.md for counts and limitations."
+  },
+  "provider": {
+    "id": "dndbeyond",
+    "version": "1.0.5"
+  },
+  "referencePolicy": {
+    "previewSelector": "a.tooltip-hover, a[data-tooltip-href]"
+  },
+  "presentationPolicy": {
+    "excludeSelectors": [
+      ".variant-cta-container"
+    ]
+  },
+  "bookLayout": {
+    "statBlock": "div.stat-block, div.stat-block-background, div.stat-block-background--space, div.stat-block-finder, div.monster--stat-block",
+    "creature": "a.monster-tooltip[data-lwl-href*=\"/monsters/\"], a.monster-tooltip[href*=\"/monsters/\"]",
+    "creatureKind": "monsters",
+    "abilities": "div.monster--stats, div.stat-block-ability-scores",
+    "sectionNames": "p.monster-header, p.monster--action-header, p.Stat-Block-Styles_Stat-Block-Heading",
+    "content": ".p-article-content",
+    "navigation": ".compendium-toc, .quick-menu"
+  }
+}

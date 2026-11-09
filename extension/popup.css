@@ -1,0 +1,99 @@
+/* DiceFox: parchment, herb green, fox orange, umber ink. */
+:root {
+  /* AnotherWorldbuilder's look (its profile Ember, DiceFox's warm browns):
+     umber surfaces, amber as the one accent — the same buttons, fields and
+     colours as the app. */
+  --base: #17120f;
+  --sunken: #1c1714;
+  --card: #221c19;
+  --popover: #28231f;
+  --field: #2a2521;
+  --raised: #322c28;
+  --hover: #3a3430;
+  --border: #423c37;
+  --text: #eee3d6;
+  --muted: #a79e94;
+  --heading: #f3c98b;
+  --accent: #e0a14a;
+  --accent-soft: #372918;
+  --accent-line: #7c5a2d;
+  --on-accent: #22180b;
+  --warn: #d9534f;
+  --danger-soft: #2e1a17;
+  --danger-line: #6e2f2c;
+  --danger-text: #e18d85;
+  /* The names the pages were written with, onto the app's. */
+  --ink: var(--text);
+  --parchment: var(--base);
+  --line: var(--border);
+  --herb: var(--accent);
+  --herb-deep: var(--accent-line);
+  --fox: var(--accent);
+  --fox-light: var(--accent);
+  --red: var(--danger-text);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { width: 440px; min-width: 440px; margin: 0; }
+html { max-height: 600px; overflow-y: auto; overflow-x: hidden; }
+body { font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--base); color: var(--text); }
+button, select, input, textarea { font: inherit; color: inherit; }
+.head { display: flex; gap: 12px; align-items: center; padding: 14px 16px 12px; background: var(--card); border-bottom: 1px solid var(--border); color: var(--text); }
+.head img { filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .35)); }
+.head h1 { font-weight: 700; font-size: 19px; line-height: 1.15; margin: 0; color: var(--heading); }
+.head .muted { color: var(--muted); margin: 2px 0 0; font-size: 12px; }
+main { padding: 12px 14px 10px; display: grid; gap: 12px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; box-shadow: none; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+.card h2 { font-weight: 700; font-size: 15px; margin: 0; color: var(--heading); }
+.state { font-size: 11.5px; padding: 2px 9px; border-radius: 999px; background: var(--raised); color: var(--muted); white-space: nowrap; }
+.state::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--muted); vertical-align: 1px; }
+.state.on { background: var(--accent-soft); color: var(--accent); }
+.state.on::before { background: var(--herb); }
+.state.wait::before { background: var(--fox-light); }
+.muted { color: var(--muted); }
+p { margin: 4px 0 8px; }
+.row { display: flex; gap: 8px; align-items: center; }
+.row > * { flex: 1; }
+.between { justify-content: space-between; }
+.between > * { flex: initial; }
+button { padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--raised); cursor: pointer; line-height: 1.25; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.primary:hover:not(:disabled) { filter: brightness(1.1); border-color: var(--accent); }
+.wide { width: 100%; margin-top: 10px; padding: 9px; }
+.ghost { background: transparent; border-color: transparent; }
+.ghost:hover:not(:disabled) { background: var(--hover); border-color: var(--accent); }
+.small, .compact { font-size: 13px; padding: 3px 9px; }
+.link { border: 0; padding: 0 4px; background: transparent; color: var(--herb); text-decoration: underline; font-size: 12px; }
+.link:hover:not(:disabled) { background: transparent; color: var(--herb-deep); }
+#awForget { margin-top: 8px; }
+input, select, textarea { width: 100%; min-width: 0; padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--field); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+textarea { resize: vertical; }
+#awCode { font: 600 18px/1 ui-monospace, monospace; letter-spacing: .2em; text-align: center; }
+.field { display: grid; gap: 4px; margin: 8px 0; }
+.field > span { font-size: 12px; color: var(--muted); }
+.provider { background: var(--sunken); border-radius: 9px; padding: 9px 10px; margin: 8px 0; }
+.provider p { font-size: 12px; margin: 0 0 6px; }
+.provider button { width: 100%; }
+#providerStatus { margin: 6px 0 0; }
+#providerStatus:empty { display: none; }
+.sources { max-height: 190px; overflow: auto; border: 1px solid var(--line); border-radius: 9px; padding: 4px; background: var(--sunken); margin-top: 6px; }
+.source { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; padding: 5px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+.source:hover { background: var(--hover); }
+.source input { width: auto; accent-color: var(--herb); }
+.settings, .expert { margin: 10px 0 0; }
+.settings summary, .expert summary { cursor: pointer; color: var(--herb); font-weight: 600; font-size: 12.5px; }
+.optionline { display: flex; justify-content: space-between; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; margin: 8px 0; background: var(--field); }
+.optionline input { width: auto; accent-color: var(--herb); }
+small { color: var(--muted); }
+.actions { display: flex; gap: 6px; margin: 8px 0; flex-wrap: wrap; }
+.actions button { flex: 1; font-size: 12px; }
+.status { margin: 10px 0 0; font-size: 12.5px; }
+.status:empty { display: none; }
+.status.error { color: var(--red); }
+.foot { text-align: center; font-size: 11px; color: var(--muted); margin: 0 0 4px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

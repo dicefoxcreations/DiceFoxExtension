@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DiceFox – Sync</title><link rel="stylesheet" href="runner.css"><link rel="stylesheet" href="theme.css"></head>
+<body><main>
+<header class="page-header"><div><a class="brand" href="popup.html">DiceFox</a><h1 data-i18n="runnerTitle"></h1><p class="muted" data-i18n="runnerIntro"></p></div><span id="buildVersion" class="version"></span></header>
+<div id="versionNotice" class="error-box" hidden><p id="versionMessage"></p><button id="reloadExtension"></button></div>
+
+<section class="panel sync-panel" aria-labelledby="profile">
+  <div class="run-heading"><div><span class="label" data-i18n="profile"></span><h2 id="profile">–</h2></div><span id="status" class="status-badge" role="status" data-i18n="ready"></span></div>
+  <div id="lastError" class="error-box" role="alert" hidden></div>
+  <p id="actionNotice" class="error-box" role="alert" hidden></p>
+  <div class="current-source"><span class="label" data-i18n="source"></span><strong id="source">–</strong></div>
+  <p id="phase" class="activity" aria-live="polite"></p>
+  <p id="activity" class="activity" aria-live="polite"></p>
+  <div class="progress-heading"><span data-i18n="syncCurrentStep"></span><span id="progressText">–</span></div>
+  <progress id="progress" aria-label="Progress" max="1"></progress>
+  <div class="metrics">
+    <div><strong id="captured">0</strong><span data-i18n="syncCaptured"></span></div>
+    <div><strong id="sourcesDone">0</strong><span data-i18n="syncSourcesDone"></span></div>
+  </div>
+  <p id="sourceSummary" class="muted" hidden></p>
+  <p class="muted" data-i18n="syncCountHint"></p>
+  <div class="actions main-actions"><button id="start" class="primary" data-i18n="startResume"></button><button id="resumeRun" class="primary" data-i18n="resumeRun" hidden></button><button id="pause" data-i18n="pause" hidden></button><button id="stop" class="quiet" data-i18n="stop" hidden></button></div>
+</section>
+
+<section class="panel app-output"><h2>AnotherWorldbuilder</h2><p data-i18n="appOutputHelp"></p><a href="popup.html" data-i18n="appOutputOpen"></a></section>
+
+<details class="panel disclosure" id="detailsPanel"><summary data-i18n="syncDetails"></summary><div class="disclosure-body">
+  <dl class="detail-grid"><div><dt data-i18n="page"></dt><dd id="page">–</dd></div><div><dt data-i18n="syncDiscovered"></dt><dd id="count">0</dd></div><div><dt data-i18n="syncMode"></dt><dd id="mode">–</dd></div><div><dt data-i18n="parallelism"></dt><dd id="workers">–</dd></div></dl>
+  <ul id="activeTasks" class="task-list"></ul>
+  <h3 data-i18n="logHeading"></h3><pre id="log" tabindex="0"></pre>
+</div></details>
+
+<details class="panel disclosure"><summary data-i18n="syncOptions"></summary><div class="disclosure-body">
+  <div class="setting"><label for="windowMode" data-i18n="windowHeading"></label><select id="windowMode"><option value="minimized" data-i18n="windowMinimized"></option><option value="visible" data-i18n="windowVisible"></option></select></div>
+  <p class="muted" data-i18n="manualResumeHelp"></p>
+</div></details>
+
+<details class="panel disclosure"><summary data-i18n="syncTools"></summary><div class="disclosure-body tools">
+  <section><h3 data-i18n="captureTools"></h3><p class="muted" data-i18n="phaseHint"></p><div class="actions"><button id="refreshCatalogViews" data-i18n="refreshCatalogViews"></button><button id="completeCatalogs" data-i18n="completeCatalogs"></button><button id="dependencyCheck" data-i18n="checkDependencies"></button><button id="fetchMissingDeps" data-i18n="fetchMissing"></button></div></section>
+  <section><h3 data-i18n="storageHeading"></h3><dl class="detail-grid"><div><dt data-i18n="storageThisProfile"></dt><dd id="storageProfile">–</dd></div><div><dt data-i18n="storageRecords"></dt><dd id="storageRecords">–</dd></div><div><dt data-i18n="storageAll"></dt><dd id="storageAll">–</dd></div></dl><p><a href="storage.html" data-i18n="storageManage"></a></p></section>
+  <section class="danger"><p class="muted" data-i18n="fullRefreshHelp"></p><button id="fullRefresh" data-i18n="fullRefresh"></button><p class="muted" data-i18n="resetHelp"></p><button id="reset" data-i18n="resetButton"></button></section>
+</div></details>
+<footer><span data-i18n="runnerControls"></span><a href="storage.html" data-i18n="storageManage"></a></footer>
+</main><script src="i18n.js"></script><script src="lwl_idb.js"></script><script src="runner.js"></script></body></html>

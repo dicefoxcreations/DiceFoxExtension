@@ -1,0 +1,24 @@
+/* DiceFox: the pages of the extension in the fox's colours — parchment,
+   herb green, fox orange, umber ink. Loaded after each page's own sheet. */
+:root {
+  --ink: #251b0e;
+  --muted: #6b5a43;
+  --border: #e2d0b1;
+  --accent: #50653d;
+  --surface: #fffaf1;
+  --fox: #c85b1e;
+  --parchment: #f6ead6;
+}
+html, body { background: var(--parchment) !important; color: var(--ink); }
+body { font-family: system-ui, "Segoe UI", sans-serif; }
+h1, h2 { font-family: Georgia, "Times New Roman", serif; letter-spacing: 0 !important; color: var(--ink); }
+a { color: var(--accent); }
+.brand, header > a:first-child { display: inline-flex; align-items: center; gap: 8px; color: var(--accent) !important; font: 700 13px Georgia, "Times New Roman", serif !important; letter-spacing: .04em !important; text-decoration: none; text-transform: none !important; }
+.brand::before, header > a:first-child::before { content: ""; width: 28px; height: 28px; background: url(icons/icon48.png) center / contain no-repeat; }
+.panel, section, .card { background: var(--surface); border-color: var(--border) !important; }
+button { border-color: var(--border); border-radius: 8px; }
+button.primary, .primary, #use { background: var(--fox) !important; border-color: var(--fox) !important; color: #fff !important; }
+button.primary:hover:not(:disabled), .primary:hover:not(:disabled) { filter: brightness(.93); }
+progress { accent-color: var(--accent); }
+input[type=checkbox], input[type=radio] { accent-color: var(--accent); }
+:focus-visible { outline: 3px solid #f08b35 !important; outline-offset: 2px; }

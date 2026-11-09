@@ -1,0 +1,599 @@
+{
+  "extName": {
+    "message": "DiceFox"
+  },
+  "extDescription": {
+    "message": "Captures your library and sends structured documents to AnotherWorldbuilder."
+  },
+  "actionTitle": {
+    "message": "DiceFox"
+  },
+  "popupTitle": {
+    "message": "DiceFox"
+  },
+  "popupIntro": {
+    "message": "Save and search books and rules offline."
+  },
+  "profile": {
+    "message": "Profile"
+  },
+  "manageProfiles": {
+    "message": "Manage profiles"
+  },
+  "noProfiles": {
+    "message": "No profiles installed. Import or create one first."
+  },
+  "sources": {
+    "message": "Sources"
+  },
+  "all": {
+    "message": "all"
+  },
+  "none": {
+    "message": "none"
+  },
+  "syncMode": {
+    "message": "Sync mode"
+  },
+  "syncNew": {
+    "message": "New / missing pages only (fast)"
+  },
+  "syncVerify": {
+    "message": "Check all known pages for changes"
+  },
+  "offlineLibrary": {
+    "message": "Offline web library"
+  },
+  "offlineLibraryDesc": {
+    "message": "Local reader with captured content, original styles, search, glossary and local links."
+  },
+  "parallelWorkers": {
+    "message": "Parallel workers"
+  },
+  "worker1": {
+    "message": "1 (gentle)"
+  },
+  "worker3": {
+    "message": "3 (recommended)"
+  },
+  "worker4": {
+    "message": "4 (fast / more RAM)"
+  },
+  "postLoadDelay": {
+    "message": "Delay after page load"
+  },
+  "startExporter": {
+    "message": "Export …"
+  },
+  "runnerTitle": {
+    "message": "Sync your library"
+  },
+  "runnerIntro": {
+    "message": "Capture content, keep your progress, then send it into your AnotherWorldbuilder world."
+  },
+  "status": {
+    "message": "Status"
+  },
+  "source": {
+    "message": "Source"
+  },
+  "page": {
+    "message": "Page"
+  },
+  "localPageRecords": {
+    "message": "Local content records"
+  },
+  "parallelism": {
+    "message": "Parallelism"
+  },
+  "ready": {
+    "message": "ready"
+  },
+  "startResume": {
+    "message": "Start sync"
+  },
+  "pause": {
+    "message": "Pause"
+  },
+  "stop": {
+    "message": "Stop"
+  },
+  "fullRefresh": {
+    "message": "Full re-read / overwrite"
+  },
+  "fullRefreshHelp": {
+    "message": "Ignores the local page cache and refreshes every selected source. With the offline reader enabled, its content and resources are rebuilt at stable paths."
+  },
+  "offlineHeading": {
+    "message": "Offline library"
+  },
+  "offlineHelp": {
+    "message": "Rebuild the reader from stored content. Missing resources may need web access; after clearing the resource cache a full sync may be necessary."
+  },
+  "rebuildOffline": {
+    "message": "Rebuild Offline Reader"
+  },
+  "checkDependencies": {
+    "message": "Check dependencies"
+  },
+  "refreshCatalogViews": {
+    "message": "Refresh catalog views"
+  },
+  "fetchMissing": {
+    "message": "Fetch missing or outdated pages"
+  },
+  "exportHeading": {
+    "message": "Export files"
+  },
+  "exportHelp": {
+    "message": "Export the current profile as a compressed single-file dataset or a structured ZIP with per-source JSON."
+  },
+  "exportGz": {
+    "message": "Single-file JSON.GZ"
+  },
+  "exportZip": {
+    "message": "Structured ZIP"
+  },
+  "exportDebug": {
+    "message": "Uncompressed JSON (debug)"
+  },
+  "logHeading": {
+    "message": "Log"
+  },
+  "resetHeading": {
+    "message": "Delete local profile data"
+  },
+  "resetHelp": {
+    "message": "Removes captured browser data, resources and pending writes for the active profile. Profile rules and library folder files remain."
+  },
+  "resetButton": {
+    "message": "Reset active profile data"
+  },
+  "profilesTitle": {
+    "message": "Site profiles"
+  },
+  "profilesIntro": {
+    "message": "Profiles are declarative JSON configurations. They contain URLs, selectors, filters, and crawl rules but no executable JavaScript."
+  },
+  "importProfile": {
+    "message": "Import profile JSON"
+  },
+  "exportProfile": {
+    "message": "Export selected profile"
+  },
+  "newProfile": {
+    "message": "New profile"
+  },
+  "deleteProfile": {
+    "message": "Delete selected profile"
+  },
+  "saveProfile": {
+    "message": "Save profile"
+  },
+  "testProfile": {
+    "message": "Test profile"
+  },
+  "profileName": {
+    "message": "Profile name"
+  },
+  "siteOrigin": {
+    "message": "Site origin"
+  },
+  "description": {
+    "message": "Description"
+  },
+  "sourceName": {
+    "message": "Source name"
+  },
+  "sourceType": {
+    "message": "Type"
+  },
+  "startUrl": {
+    "message": "Start URL"
+  },
+  "addSource": {
+    "message": "Add source"
+  },
+  "remove": {
+    "message": "Remove"
+  },
+  "advancedJson": {
+    "message": "Advanced profile JSON"
+  },
+  "profileSaved": {
+    "message": "Profile saved."
+  },
+  "profileImported": {
+    "message": "Profile imported."
+  },
+  "permissionDenied": {
+    "message": "Host permission was not granted."
+  },
+  "addCurrentPage": {
+    "message": "Add current page"
+  },
+  "detectCurrentPage": {
+    "message": "Detect current page"
+  },
+  "detectNeedsWebPage": {
+    "message": "Open a normal http(s) web page first."
+  },
+  "detectingPage": {
+    "message": "Analyzing the current page…"
+  },
+  "detectedPageTitle": {
+    "message": "Detected page"
+  },
+  "detectIntro": {
+    "message": "Choose the suggestion that best describes what should be followed below this page. You can change the type before adding it. The extension stores the result as a normal portable profile."
+  },
+  "dismiss": {
+    "message": "Dismiss"
+  },
+  "detectedFilters": {
+    "message": "Detected filters / controls"
+  },
+  "detectedFiltersHelp": {
+    "message": "Checked controls will be replayed before scanning. Set the page to the state you want before detection, then keep only the relevant controls checked."
+  },
+  "detectedSourceName": {
+    "message": "Source name"
+  },
+  "detectedSourceType": {
+    "message": "Use as"
+  },
+  "addDetectedSource": {
+    "message": "Add detected source to profile"
+  },
+  "createProfileFromDetection": {
+    "message": "Create new profile from this site"
+  },
+  "detectedItems": {
+    "message": "matching links / entries"
+  },
+  "detectedSourceAdded": {
+    "message": "Detected source added to the profile."
+  },
+  "detectedProfileCreated": {
+    "message": "New profile created from the detected page."
+  },
+  "detectedChildPages": {
+    "message": "Detected child pages"
+  },
+  "detectedChildHelp": {
+    "message": "For a hub/navigation page, select child pages that should become separate sources. They use auto-discovery when synchronized, so you do not need to configure their list selectors by hand."
+  },
+  "addSelectedChildren": {
+    "message": "Add selected child pages as auto-detected sources"
+  },
+  "detectedChildrenAdded": {
+    "message": "detected child source(s) added."
+  },
+  "exportDetectionDebug": {
+    "message": "Export debug report"
+  },
+  "debugReportPrivacy": {
+    "message": "The debug report contains detection metadata, visible link titles/URLs and selectors, but no page body, cookies, passwords, storage data, or typed text-input values. Sensitive-looking URL parameters are redacted."
+  },
+  "debugReportExported": {
+    "message": "Detection debug report exported."
+  },
+  "noDetectionReport": {
+    "message": "No detection result is available."
+  },
+  "selectAll": {
+    "message": "Select all"
+  },
+  "selectNone": {
+    "message": "Select none"
+  },
+  "selectedOf": {
+    "message": "$1 of $2 selected"
+  },
+  "childSearchPlaceholder": {
+    "message": "Search detected pages"
+  },
+  "selectVisible": {
+    "message": "Select shown"
+  },
+  "selectNoneVisible": {
+    "message": "Deselect shown"
+  },
+  "selectedOfShown": {
+    "message": "$1 of $2 selected · $3 shown"
+  },
+  "scanAllPages": {
+    "message": "Scan all list pages"
+  },
+  "paginationPreview": {
+    "message": "Page 1 preview: $1 item(s) · $2 list page(s) detected"
+  },
+  "paginationScanReady": {
+    "message": "The normal detection preview only reads the current page. Full sync will use all detected pages; use this button only if you want to verify every item now."
+  },
+  "paginationScanRunning": {
+    "message": "Scanning list page $1 of $2…"
+  },
+  "paginationScanComplete": {
+    "message": "Full detection scan complete: $1 unique item(s) from $2 page(s)."
+  },
+  "paginationScanFailed": {
+    "message": "Full detection scan failed: $1"
+  },
+  "paginationScanPartial": {
+    "message": "Partial scan saved: $1 unique item(s) from $2 of $3 pages. Scan again to resume at the next page."
+  },
+  "paginationScanRunningDetailed": {
+    "message": "Scanning list page $1 of $2… $3 unique item(s) collected."
+  },
+  "scanDebugLiveTitle": {
+    "message": "Live scan debug"
+  },
+  "exportScanDebug": {
+    "message": "Export scan debug"
+  },
+  "cancelScan": {
+    "message": "Cancel scan"
+  },
+  "paginationScanCancelling": {
+    "message": "Cancelling scan… the current step will finish first."
+  },
+  "scanDebugExported": {
+    "message": "Scan debug report exported."
+  },
+  "storeImages": {
+    "message": "Store images"
+  },
+  "storeImagesDesc": {
+    "message": "Download images used by captured pages into the local library."
+  },
+  "folderHeading": {
+    "message": "Library folder"
+  },
+  "folderHelp": {
+    "message": "The offline reader and exports go into the folder you pick here. Nothing is written to the Chrome download directory."
+  },
+  "folderNone": {
+    "message": "No folder chosen yet"
+  },
+  "folderChoose": {
+    "message": "Choose folder"
+  },
+  "folderChange": {
+    "message": "Change folder"
+  },
+  "folderReconnect": {
+    "message": "Reconnect"
+  },
+  "folderTest": {
+    "message": "Test write"
+  },
+  "folderNoPermission": {
+    "message": "Write permission missing – reconnect the folder"
+  },
+  "folderReady": {
+    "message": "Ready"
+  },
+  "pendingWrites": {
+    "message": "Queued file writes"
+  },
+  "windowHeading": {
+    "message": "Crawl window"
+  },
+  "windowHelp": {
+    "message": "Pages are read in a separate window, so your own tabs stay untouched and clicking around does not disturb a running sync. You stay logged in because it is the same Chrome profile."
+  },
+  "windowMinimized": {
+    "message": "Minimised (recommended)"
+  },
+  "windowVisible": {
+    "message": "Visible window"
+  },
+  "windowVisibleHelp": {
+    "message": "Switch to a visible window if pages come out empty or unstyled while minimised."
+  },
+  "resumeRun": {
+    "message": "Continue"
+  },
+  "runnerControls": {
+    "message": "You can close this tab while another browser window stays open. After closing the browser, continue the run yourself."
+  },
+  "paginationEstimate": {
+    "message": "≈$1 item(s) across $2 list page(s), estimated from page 1. The sync walks these pages on its own — you do not need to scan them here."
+  },
+  "scanAllPagesCount": {
+    "message": "Scan all $1 list pages exactly"
+  },
+  "scanRunsInCrawlWindow": {
+    "message": "Runs in the background crawl window, not in your tabs."
+  },
+  "errorNoDetail": {
+    "message": "This run failed, but no error text was kept for it. Press \"Test write\" for a folder diagnosis, or press Start to reproduce the failure — the reason is recorded from now on."
+  },
+  "phaseHint": {
+    "message": "Complete missing previews, filter data and link targets in captured content."
+  },
+  "storageHeading": {
+    "message": "Captured data"
+  },
+  "storageHelp": {
+    "message": "Captured content, resource cache and pending writes live in the Chrome profile. Storage & files shows their sizes separately and provides cleanup controls. Files in the library folder remain when browser data is reset."
+  },
+  "storageThisProfile": {
+    "message": "This profile"
+  },
+  "storageAll": {
+    "message": "All extension data"
+  },
+  "storageRecords": {
+    "message": "Records"
+  },
+  "exactFacets": {
+    "message": "Rebuild these filters exactly"
+  },
+  "exactFacetsHelp": {
+    "message": "Harvesting only recovers what an item's page prints. These are the filters the site offers itself; ticking one makes the sync ask the site for it — it walks the list once per option value and records which items come back, which reproduces that filter exactly, including values that appear nowhere in the item's HTML. The estimate is the extra list pages that costs."
+  },
+  "exactFacetsNone": {
+    "message": "This page offers no filter controls that can be rebuilt."
+  },
+  "exactFacetsCost": {
+    "message": "$1 options · about $2 extra list pages"
+  },
+  "exactFacetsTooMany": {
+    "message": "$1 options — too many to walk"
+  },
+  "captureMode": {
+    "message": "Offline appearance"
+  },
+  "captureFullPage": {
+    "message": "Complete page with original layout"
+  },
+  "captureArticle": {
+    "message": "Article in the library reader"
+  },
+  "storageManage": {
+    "message": "Storage & files"
+  },
+  "storageRefresh": {
+    "message": "Refresh"
+  },
+  "storageExplanation": {
+    "message": "Free browser space or inspect the saved library folder."
+  },
+  "storageBrowser": {
+    "message": "Browser storage"
+  },
+  "storageContent": {
+    "message": "Content, styles & settings"
+  },
+  "storageResources": {
+    "message": "Resource cache"
+  },
+  "storageTotal": {
+    "message": "Total"
+  },
+  "storageEstimate": {
+    "message": "Settings and profile rules are included in the total and remain after deleting captured content. Files in the library folder are counted separately."
+  },
+  "storageCleanup": {
+    "message": "Clean up stored data"
+  },
+  "storageUnused": {
+    "message": "Clean unused data"
+  },
+  "storageClearResources": {
+    "message": "Clear resource cache"
+  },
+  "storageDiscardProfile": {
+    "message": "Discard this profile’s pending writes"
+  },
+  "storageResourceHelp": {
+    "message": "Images and other resources for transfer to AnotherWorldbuilder."
+  },
+  "storageAuto": {
+    "message": "Automatically clean up after successful builds"
+  },
+  "storageAutoHelp": {
+    "message": "Removes unused browser resources after capture. Saved content and your worlds remain."
+  },
+  "storageDeleteContent": {
+    "message": "Captured contents"
+  },
+  "storageResetHelp": {
+    "message": "Remove captured content, cached media and pending writes for this profile from the browser. Profile settings and files in your library folder remain."
+  },
+  "storageTemporary": {
+    "message": "Temporary data & unfinished writes"
+  },
+  "storageClearTemporary": {
+    "message": "Clear detection & diagnostics"
+  },
+  "storageDiscardAll": {
+    "message": "Discard all pending writes"
+  },
+  "storageFile": {
+    "message": "Name / file"
+  },
+  "storageSize": {
+    "message": "Size"
+  },
+  "storageFolderHelp": {
+    "message": "Browse folder contents here, or open the system folder dialog at the selected folder. This does not change your library folder. Folder contents are read only."
+  },
+  "storageShowFolder": {
+    "message": "Show in system folder dialog"
+  },
+  "storageBrowse": {
+    "message": "Show folder contents"
+  },
+  "storageMeasure": {
+    "message": "Measure library folder size"
+  },
+  "storageBack": {
+    "message": "Back to synchronization"
+  },
+  "storageReset": {
+    "message": "Delete browser contents…"
+  },
+  "completeCatalogs": {
+    "message": "Complete previews and filters"
+  },
+  "syncCurrentStep": {
+    "message": "Progress in current step"
+  },
+  "syncCaptured": {
+    "message": "Stored articles"
+  },
+  "syncOnDisk": {
+    "message": "Backed up this run"
+  },
+  "syncSourcesDone": {
+    "message": "Sources processed"
+  },
+  "syncDetails": {
+    "message": "Activity & log"
+  },
+  "syncOptions": {
+    "message": "Sync settings"
+  },
+  "syncTools": {
+    "message": "Reader, export & maintenance"
+  },
+  "syncDiscovered": {
+    "message": "Known entries (including lists)"
+  },
+  "syncBackupHint": {
+    "message": "With Offline Reader enabled, captured text and HTML are saved to this folder during the sync. The reader is built after all sources have been processed."
+  },
+  "selectSourcesFirst": {
+    "message": "Select at least one source."
+  },
+  "syncStartFailed": {
+    "message": "Could not start synchronization."
+  },
+  "storageStopSync": {
+    "message": "Stop synchronization"
+  },
+  "storageDetails": {
+    "message": "Details & automatic cleanup"
+  },
+  "syncCountHint": {
+    "message": "Captured entries are not in the world automatically. Send them through DiceFox afterwards."
+  },
+  "retryIncompleteSources": {
+    "message": "Retry incomplete sources"
+  },
+  "manualResumeHelp": {
+    "message": "Closing the last browser window or the crawl window stops the run. After restarting the browser, it waits for Continue. Captured content is retained."
+  },
+  "appOutputHelp": {
+    "message": "Captured content stays in the browser until you send it. The only output is your chosen world in AnotherWorldbuilder."
+  },
+  "appOutputOpen": {
+    "message": "Choose a world and send"
+  },
+  "captureTools": {
+    "message": "Complete captured content"
+  }
+}

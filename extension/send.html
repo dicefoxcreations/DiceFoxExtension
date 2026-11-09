@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DiceFox · Send</title>
+<link rel="stylesheet" href="popup.css">
+<link rel="stylesheet" href="send.css">
+</head>
+<body class="send">
+<header class="head">
+  <img src="icons/fox64.png" alt="" width="40" height="40">
+  <div><h1 id="title">DiceFox</h1><p id="target" class="muted"></p></div>
+</header>
+<main>
+  <section class="card">
+    <h2 id="connectionTitle">AnotherWorldbuilder</h2>
+    <p id="connectionMessage" class="muted"></p>
+    <button id="refreshWorlds" type="button"></button>
+    <label class="field" id="worldField" hidden><span id="worldLabel"></span><select id="worldSelect"></select></label>
+    <p id="worldHelp" class="muted"></p>
+  </section>
+  <section class="card" id="selectionCard" hidden>
+    <h2 id="selectionTitle"></h2>
+    <p id="selectionHelp" class="muted"></p>
+    <div class="row"><input id="selectionSearch" type="search"><button id="selectAll" type="button"></button><button id="selectNone" type="button"></button></div>
+    <div id="selectionList" class="selection-list"></div>
+  </section>
+  <section class="card" id="typeCard" hidden>
+    <h2 id="typeTitle"></h2><p id="typeSummary"></p><details id="typeDetails"><summary id="typeDetailsLabel"></summary><ul id="typeRows"></ul></details>
+  </section>
+  <section class="card">
+    <div class="card-head"><h2 id="whatTitle"></h2><span id="state" class="state"></span></div>
+    <div id="counts" class="counts"></div>
+    <p id="note" class="muted"></p>
+    <p id="shared" class="warn" hidden></p>
+    <label id="partialField" class="warn" hidden><input id="allowPartial" type="checkbox"><span id="partialLabel"></span></label>
+    <p id="captureTools" hidden><a href="runner.html" target="_blank" rel="noopener" id="captureStatusLink"></a> <button id="retryCapture" type="button" hidden></button></p>
+    <div class="bar"><div id="bar"></div></div>
+    <p id="progress" class="muted"></p>
+    <div class="row"><button id="go" class="primary" disabled></button><button id="stop" hidden></button></div>
+  </section>
+  <details class="card log"><summary id="logTitle"></summary><pre id="log"></pre></details>
+  <p id="unofficial" class="foot"></p>
+</main>
+<script src="i18n.js"></script>
+<script src="lwl_idb.js"></script>
+<script src="aw_bridge.js"></script>
+<script src="aw/ids.js"></script>
+<script src="aw/markdown.js"></script>
+<script src="aw/dndbeyond.js"></script>
+<script src="aw/books.js"></script>
+<script src="aw/templates.js"></script>
+<script src="send.js"></script>
+</body>
+</html>
