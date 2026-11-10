@@ -146,6 +146,129 @@
     },
     "blocks": [],
     "description": "",
+    "icon": "🗡️",
+    "id": "weapon-category",
+    "infobox": {
+      "align": "none",
+      "show": [],
+      "width": "auto"
+    },
+    "name": "Weapon category",
+    "name_pattern": "%%input%%",
+    "properties": [],
+    "sort": [],
+    "navigation_hidden": true,
+    "supertype": "equipment-category"
+  },
+  {
+    "auth": {
+      "edit": "gm",
+      "view": "all"
+    },
+    "blocks": [],
+    "description": "",
+    "icon": "🛡️",
+    "id": "armor-category",
+    "infobox": {
+      "align": "none",
+      "show": [],
+      "width": "auto"
+    },
+    "name": "Armor category",
+    "name_pattern": "%%input%%",
+    "properties": [],
+    "sort": [],
+    "navigation_hidden": true,
+    "supertype": "equipment-category"
+  },
+  {
+    "auth": {
+      "edit": "gm",
+      "view": "all"
+    },
+    "blocks": [],
+    "description": "",
+    "icon": "🎒",
+    "id": "gear-category",
+    "infobox": {
+      "align": "none",
+      "show": [],
+      "width": "auto"
+    },
+    "name": "Gear category",
+    "name_pattern": "%%input%%",
+    "properties": [],
+    "sort": [],
+    "navigation_hidden": true,
+    "supertype": "equipment-category"
+  },
+  {
+    "auth": {
+      "edit": "gm",
+      "view": "all"
+    },
+    "blocks": [],
+    "description": "",
+    "icon": "💥",
+    "id": "damage-type",
+    "infobox": {
+      "align": "none",
+      "show": [],
+      "width": "auto"
+    },
+    "name": "Damage type",
+    "name_pattern": "%%input%%",
+    "properties": [],
+    "sort": [],
+    "navigation_hidden": true
+  },
+  {
+    "auth": {
+      "edit": "gm",
+      "view": "all"
+    },
+    "blocks": [],
+    "description": "",
+    "icon": "⚙️",
+    "id": "weapon-property",
+    "infobox": {
+      "align": "none",
+      "show": [],
+      "width": "auto"
+    },
+    "name": "Weapon property",
+    "name_pattern": "%%input%%",
+    "properties": [],
+    "sort": [],
+    "navigation_hidden": true
+  },
+  {
+    "auth": {
+      "edit": "gm",
+      "view": "all"
+    },
+    "blocks": [],
+    "description": "",
+    "icon": "🎖️",
+    "id": "weapon-mastery",
+    "infobox": {
+      "align": "none",
+      "show": [],
+      "width": "auto"
+    },
+    "name": "Weapon mastery",
+    "name_pattern": "%%input%%",
+    "properties": [],
+    "sort": [],
+    "navigation_hidden": true
+  },
+  {
+    "auth": {
+      "edit": "gm",
+      "view": "all"
+    },
+    "blocks": [],
+    "description": "",
     "icon": "🏅",
     "id": "feat-category",
     "infobox": {
@@ -538,7 +661,8 @@
     "name_pattern": "%%input%%",
     "properties": [],
     "sort": [],
-    "navigation_hidden": true
+    "navigation_hidden": true,
+    "kinds_apart": true
   },
   {
     "auth": {
@@ -742,10 +866,6 @@
         },
         {
           "element": "select",
-          "property": "48vbevp6ebt1m8td7serzxakhq"
-        },
-        {
-          "element": "select",
           "property": "3b6mtajk6xgfqwy2e5q2ref158"
         },
         {
@@ -785,13 +905,6 @@
         "kind": "image",
         "label": "Image",
         "width": 0
-      },
-      {
-        "article_type": "equipment-category",
-        "key": "48vbevp6ebt1m8td7serzxakhq",
-        "kind": "reference",
-        "label": "Category",
-        "multiple": false
       },
       {
         "article_type": "rarity",
@@ -878,6 +991,10 @@
         },
         {
           "element": "select",
+          "property": "jpma1ff9835x8nfwcz8gdnbmn5"
+        },
+        {
+          "element": "select",
           "property": "3b6mtajk6xgfqwy2e5q2ref158"
         },
         {
@@ -889,15 +1006,23 @@
           "property": "3jsbwtff1q2wdcs666bbkr9d53"
         },
         {
-          "element": "text",
+          "element": "select",
           "property": "05d9bqbctc0mk7kvk1ab376k8g"
         },
         {
           "element": "text",
-          "property": "76eermdrt83axnwqhzc0w2frkm"
+          "property": "q4tyt2rprr9wsnz68jyb2e0y87"
         },
         {
           "element": "text",
+          "property": "3akaw9n1pp09wkwas9p9kw6rny"
+        },
+        {
+          "element": "select",
+          "property": "76eermdrt83axnwqhzc0w2frkm"
+        },
+        {
+          "element": "select",
           "property": "2sqw7gyhmj838prwn8f92pthkj"
         },
         {
@@ -927,6 +1052,20 @@
     "name_pattern": "%%input%%",
     "properties": [
       {
+        "key": "48vbevp6ebt1m8td7serzxakhq",
+        "label": "Category",
+        "kind": "reference",
+        "article_type": "weapon-category",
+        "multiple": false
+      },
+      {
+        "key": "jpma1ff9835x8nfwcz8gdnbmn5",
+        "label": "Base weapon",
+        "kind": "reference",
+        "article_type": "weapon",
+        "multiple": true
+      },
+      {
         "key": "3jsbwtff1q2wdcs666bbkr9d53",
         "kind": "text",
         "label": "Damage",
@@ -934,21 +1073,36 @@
       },
       {
         "key": "05d9bqbctc0mk7kvk1ab376k8g",
-        "kind": "text",
         "label": "Damage type",
+        "kind": "reference",
+        "article_type": "damage-type",
+        "multiple": true
+      },
+      {
+        "key": "q4tyt2rprr9wsnz68jyb2e0y87",
+        "label": "Versatile",
+        "kind": "text",
+        "multiline": false
+      },
+      {
+        "key": "3akaw9n1pp09wkwas9p9kw6rny",
+        "label": "Range",
+        "kind": "text",
         "multiline": false
       },
       {
         "key": "76eermdrt83axnwqhzc0w2frkm",
-        "kind": "text",
         "label": "Properties",
-        "multiline": false
+        "kind": "reference",
+        "article_type": "weapon-property",
+        "multiple": true
       },
       {
         "key": "2sqw7gyhmj838prwn8f92pthkj",
-        "kind": "text",
         "label": "Mastery",
-        "multiline": false
+        "kind": "reference",
+        "article_type": "weapon-mastery",
+        "multiple": false
       }
     ],
     "supertype": "item",
@@ -973,6 +1127,10 @@
         {
           "element": "select",
           "property": "48vbevp6ebt1m8td7serzxakhq"
+        },
+        {
+          "element": "select",
+          "property": "24mfanp3d0ptchv9c5r67bdb0t"
         },
         {
           "element": "select",
@@ -1012,6 +1170,20 @@
     "name": "Armor",
     "name_pattern": "%%input%%",
     "properties": [
+      {
+        "key": "48vbevp6ebt1m8td7serzxakhq",
+        "label": "Category",
+        "kind": "reference",
+        "article_type": "armor-category",
+        "multiple": false
+      },
+      {
+        "key": "24mfanp3d0ptchv9c5r67bdb0t",
+        "label": "Base armor",
+        "kind": "reference",
+        "article_type": "armor",
+        "multiple": true
+      },
       {
         "key": "6j6hjy8qyst6vf9xmr6t0er7bz",
         "kind": "text",
@@ -1172,13 +1344,58 @@
     "icon": "🧰",
     "id": "gear",
     "infobox": {
-      "align": "none",
-      "show": [],
-      "width": "auto"
+      "align": "right",
+      "width": "narrow",
+      "show": [
+        {
+          "element": "image",
+          "property": "18m5q605zjqn4sw14qrdf4ye14"
+        },
+        {
+          "element": "select",
+          "property": "48vbevp6ebt1m8td7serzxakhq"
+        },
+        {
+          "element": "select",
+          "property": "3b6mtajk6xgfqwy2e5q2ref158"
+        },
+        {
+          "element": "text",
+          "property": "28mrh7cjb36fdxstjzaej0x8xa"
+        },
+        {
+          "element": "text",
+          "property": "2wka7jw5ettxec6r7hed8er2ze"
+        },
+        {
+          "element": "text",
+          "property": "116xqkfydv48sk91pem5r70e5z"
+        },
+        {
+          "element": "select",
+          "property": "0jg76s43bszre5sx5zg2zw455g"
+        },
+        {
+          "element": "select",
+          "property": "59ye9cd2e8r9vdev1v01y9r64j"
+        },
+        {
+          "element": "select",
+          "property": "40vzvjdn2rm5d8tdn6zhjx0qr4"
+        }
+      ]
     },
     "name": "Gear",
     "name_pattern": "%%input%%",
-    "properties": [],
+    "properties": [
+      {
+        "key": "48vbevp6ebt1m8td7serzxakhq",
+        "label": "Category",
+        "kind": "reference",
+        "article_type": "gear-category",
+        "multiple": false
+      }
+    ],
     "supertype": "item",
     "sort": []
   },

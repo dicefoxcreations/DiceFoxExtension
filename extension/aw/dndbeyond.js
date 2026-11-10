@@ -128,7 +128,11 @@
     const dataDocs = new Map();
     let fresh = []; // value documents made since the last take
 
-    function dataDoc(kind, name) {
+    /* A value as a document of its own — of `type` where it is a kind of the
+       list (`weapon-category` for Equipment category), else of the list's
+       type. A value no list has yet is made: content beyond the core rules
+       (a weapon property of a third party's book) comes in with it. */
+    function dataDoc(kind, name, type = dataTypeId(kind)) {
       name = squeeze(name).replace(/^,+|,+$/g, '').trim();
       if (!name) return null;
       const key = name.toLowerCase();
@@ -136,9 +140,35 @@
       if (!dataDocs.has(k)) {
         const id = articleId(kind, key);
         dataDocs.set(k, id);
-        fresh.push({ id, type: dataTypeId(kind), slug: slug(name), name: capFirst(name), view: 'all', edit: 'gm', fields: {}, parts: [] });
+        fresh.push({ id, type: byType.has(type) ? type : dataTypeId(kind), slug: slug(name), name: capFirst(name), view: 'all', edit: 'gm', fields: {}, parts: [] });
       }
       return dataDocs.get(k);
+    }
+    /* A field of a type as the world has it, inherited too — a world whose
+       weapon still writes its damage type as text gets text. */
+    function fieldOf(typeId, label) {
+      for (let t = byType.get(typeId), n = 0; t && n < 20; t = byType.get(t.supertype), n++) {
+        const f = (t.properties || []).find(x => x.label === label);
+        if (f) return f;
+      }
+      return null;
+    }
+    const listed = (typeId, label) => fieldOf(typeId, label)?.kind === 'reference';
+    /* A creature's type as one of the list: `Swarm of Tiny Beasts` is beasts,
+       a sentence about it names one. */
+    function creatureType(raw) {
+      const s = squeeze(raw).replace(/\.$/, '');
+      const swarm = /^swarm of \w+ (.+)$/i.exec(s);
+      const words = (swarm ? swarm[1] : s).toLowerCase();
+      const known = VALUES['Creature type'];
+      const plural = k => (k.endsWith('y') ? k.slice(0, -1) + 'ies' : k.endsWith('s') || k === 'Undead' || k === 'Fey' ? k : k + 's');
+      const exact = known.find(k => words === k.toLowerCase() || words === plural(k).toLowerCase());
+      if (exact) return exact;
+      if (s.split(' ').length > 3) {
+        const named = known.find(k => new RegExp(`\\b(${k}|${plural(k)})\\b`, 'i').test(s));
+        if (named) return named;
+      }
+      return isLower(s) ? title(s) : s;
     }
     function sourceFields(e) {
       const [book, page] = sourceOf(e);
@@ -242,11 +272,13 @@
       const p = block && block.classList.contains('mon-stat-block-2024') ? 'mon-stat-block-2024' : 'mon-stat-block';
       const fields = sourceFields(e);
       const meta = block ? textOf(block.querySelector(`.${p}__meta`)) : '';
-      let m = /^(\w+(?: or \w+)?)\s+(.+?)(?:\s*\((.+?)\))?,\s*(.+)$/.exec(meta);
+      let m = /^(\w+(?: or \w+)?)\s+([^,(]+?)(?:\s*\(([^)]*)\))?,\s*(.+)$/i.exec(meta);
       if (m) {
-        fields.Size = dataDoc('Size', m[1]);
-        fields['Creature type'] = dataDoc('Creature type', isLower(m[2]) ? title(m[2]) : m[2]);
-        if (m[3]) fields.Tags = m[3];
+        fields.Size = dataDoc('Size', m[1].replace(/ Or /, ' or '));
+        fields['Creature type'] = dataDoc('Creature type', creatureType(m[2]));
+        // A swarm says what it is a swarm of, beside its type.
+        const swarm = /^swarm of .+$/i.exec(m[2].trim());
+        if (m[3] || swarm) fields.Tags = [swarm?.[0].toLowerCase(), m[3]].filter(Boolean).join(', ');
         fields.Alignment = dataDoc('Alignment', title(m[4]));
       }
       const attributes = {};
@@ -370,6 +402,15 @@
     // A thing's kind is its type: a magic item's by what its line says, a piece
     // of equipment's by its category.
     const MAGIC_KINDS = { weapon: 'weapon', armor: 'armor', potion: 'potion', ring: 'ring', rod: 'rod', scroll: 'scroll', staff: 'staff', wand: 'wand', 'wondrous item': 'wondrous-item' };
+    const CATEGORY_OF = { weapon: 'weapon-category', armor: 'armor-category', gear: 'gear-category' };
+    const MASTERIES = ['Cleave', 'Graze', 'Nick', 'Push', 'Sap', 'Slow', 'Topple', 'Vex'];
+    /* Equipment of the library by its name — `Armor (plate)` names Plate
+       Armor. The current edition's where both have it, as names go. */
+    const equipmentNamed = name => {
+      const want = [name, name + ' armor'].map(n => n.toLowerCase());
+      const found = byKind.equipment.filter(e => want.includes(String(e.t).toLowerCase())).sort((a, b) => legacyOf(a) - legacyOf(b));
+      return found.length ? byUrl.get(normUrl(found[0].u)) ?? null : null;
+    };
     function kindOfEquipment(category) {
       if (category.includes('Weapon')) return 'weapon';
       if (['Armor', 'Light Armor', 'Medium Armor', 'Heavy Armor', 'Shield'].includes(category)) return 'armor';
@@ -382,6 +423,12 @@
       const m = /^([^,(]+?)(?:\s*\(([^)]*)\))?,\s*([^(]+?)(?:\s*\((requires attunement[^)]*)\))?\s*$/.exec(details);
       const kind = (m ? m[1] : details.split(',')[0]).trim().toLowerCase();
       fields._type = MAGIC_KINDS[kind] || 'wondrous-item';
+      // The weapon or armor it is made of — where the line names one, not `any sword`.
+      const label = { weapon: 'Base weapon', armor: 'Base armor' }[fields._type];
+      if (label && m?.[2] && !/^any\b/i.test(m[2].trim()) && fieldOf(fields._type, label)) {
+        const base = equipmentNamed(m[2].trim());
+        if (base) fields[label] = [base];
+      }
       if (m) {
         const r = m[3].trim();
         fields.Rarity = dataDoc('Rarity', r[0].toUpperCase() + r.slice(1).toLowerCase());
@@ -398,8 +445,10 @@
       const root = soup.querySelector('.details-container-content-description, .more-info-content, .primary-content');
       let text = root ? markdown(root, ['tags', 'source', 'item-source', 'details-container-content-footer']) : '';
       const m = /Type:\s*(.+?)\s+Cost:\s*(.+?)\s+Weight:\s*(.+?)$/.exec(text.split('\n')[0]);
+      const kind = m ? kindOfEquipment(m[1]) : 'gear';
       if (m) {
-        fields.Category = dataDoc('Equipment category', m[1]);
+        // Each kind its own list of categories — a weapon's, an armor's, gear's.
+        fields.Category = dataDoc('Equipment category', m[1], CATEGORY_OF[kind] || 'equipment-category');
         fields.Cost = m[2];
         fields.Weight = m[3];
         text = text.split('\n').slice(1).join('\n').trim();
@@ -417,15 +466,39 @@
       if (weapon?.Damage) {
         const damage = /^(.*?)\s+(Acid|Bludgeoning|Cold|Fire|Force|Lightning|Necrotic|Piercing|Poison|Psychic|Radiant|Slashing|Thunder)$/i.exec(weapon.Damage);
         fields.Damage = damage ? damage[1] : weapon.Damage;
-        if (damage) fields['Damage type'] = damage[2][0].toUpperCase() + damage[2].slice(1).toLowerCase();
+        if (damage) {
+          const type = damage[2][0].toUpperCase() + damage[2].slice(1).toLowerCase();
+          fields['Damage type'] = listed('weapon', 'Damage type') ? [dataDoc('Damage type', type)] : type;
+        }
       }
-      if (weapon?.Properties) fields.Properties = weapon.Properties;
       const mastery = /mastery property[^\n]*\n+\*\*\*([\w ]+?)\.\*\*\*/.exec(plain);
       if (mastery) fields.Mastery = mastery[1];
+      if (weapon?.Properties) {
+        if (listed('weapon', 'Properties')) {
+          // Each its own value: `Thrown (range 20/60)` is Thrown, its range
+          // beside it; a mastery the table lists with them is the mastery.
+          const picked = [];
+          for (const raw of weapon.Properties.split(/,(?![^(\[]*[)\]])/)) {
+            const p = /^\s*([^([]+?)\s*(?:[([]\s*([^)\]]*?)\s*[)\]])?\s*$/.exec(raw);
+            if (!p) continue;
+            const name = p[1].replace(/\b\p{L}/gu, c => c.toUpperCase());
+            if (MASTERIES.includes(name)) {
+              fields.Mastery ||= name;
+              continue;
+            }
+            if (/^versatile$/i.test(name) && p[2]) fields.Versatile = p[2];
+            const range = /^(thrown|ammunition|range)$/i.test(name) && /(\d+\s*\/\s*\d+)/.exec(p[2] || '');
+            if (range) fields.Range = range[1].replace(/\s/g, '');
+            picked.push(dataDoc('Weapon property', name));
+          }
+          fields.Properties = picked.filter(Boolean);
+        } else fields.Properties = weapon.Properties;
+      }
+      if (fields.Mastery && listed('weapon', 'Mastery')) fields.Mastery = dataDoc('Weapon mastery', fields.Mastery);
       const ac = table(['Armor Class', 'Armor Class (AC)']);
       const armorClass = ac && (ac['Armor Class'] || ac['Armor Class (AC)']);
-      fields._type = m ? kindOfEquipment(m[1]) : 'gear';
-      if (fields._type !== 'weapon') for (const label of ['Damage', 'Damage type', 'Properties', 'Mastery']) delete fields[label];
+      fields._type = kind;
+      if (fields._type !== 'weapon') for (const label of ['Damage', 'Damage type', 'Properties', 'Mastery', 'Versatile', 'Range']) delete fields[label];
       if (fields._type === 'armor' && armorClass) fields['Armor class'] = armorClass;
       text = text.replace(/\n+Tags:\n*(?:.+\n*)*$/, '').trim();
       return [fields, { Description: text }];
@@ -474,7 +547,7 @@
         const m = new RegExp('\\*\\*' + label + ':\\*\\*\\s*([^\\n]+)').exec(text);
         if (m) {
           const value = unlink(m[1]).trim();
-          fields[field] = field === 'Creature type' ? dataDoc('Creature type', value) : value;
+          fields[field] = field === 'Creature type' ? dataDoc('Creature type', creatureType(value)) : value;
         }
       }
       const image = imageField(mainImage(soup), name);
