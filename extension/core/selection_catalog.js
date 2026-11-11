@@ -7,6 +7,11 @@ const selectionCatalogKey=(profileId,sourceId)=>`dicefox:catalog:${profileId}:${
 const SELECTION_FORMAT=2;
 const selectionUrl=value=>{
  const u=new URL(value);u.hash='';u.search='';
+ // A book's pages: their case does not matter to D&D Beyond, and some of its
+ // links lack the leading slash — /sources/dnd/x/sources/dnd/x/chapter — so a
+ // chapter would be read again under each spelling, or not found at all.
+ const book=u.pathname.lastIndexOf('/sources/');
+ if(book>=0)u.pathname=u.pathname.slice(book).toLowerCase();
  return u.href.replace(/\/+$/,'').replace('/sources/dnd/free-rules','/sources/dnd/br-2024');
 };
 async function selectionProfile(){
