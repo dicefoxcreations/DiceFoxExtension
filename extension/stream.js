@@ -60,7 +60,7 @@ async function snapshot(){
  const whole=(progress.total||0)+(progress.coming||0),open=progress.final===false;
  $('progress').textContent=whole||total?`${progress.done} / ${whole||total}${open?'+':''}${progress.current?' · '+progress.current:''}`:progress.current||'';
  $('bar').style.width=whole?Math.round(progress.done/whole*100)+'%':'0';
- const n=progress.totals||{};$('totals').textContent=`${n.new||0} new · ${n.known||0} present${n.updated?' · '+n.updated+' updated':''}${n.gone?' · '+n.gone+' left out':''} · ${n.images||0} images${n.missingImages?' · '+n.missingImages+' images missing':''}`;
+ const n=progress.totals||{};$('totals').textContent=`${n.new||0} new · ${n.known||0} present${n.updated?' · '+n.updated+' updated':''}${n.gone?' · '+n.gone+' left out':''}${n.unowned?' · '+n.unowned+' not in your library':''} · ${n.images||0} images${n.missingImages?' · '+n.missingImages+' images missing':''}`;
  // Why the export stopped says nothing once it runs again; what this page said itself stays.
  const why=active?'':progress.error||'';
  if(why!==reason){if(why||$('error').textContent===reason)$('error').textContent=why;reason=why;}
@@ -78,17 +78,23 @@ function showLists(lists,kind){
   li.append(name,count);return li;
  }));
 }
-// What was left out and why — to check afterwards whether the reading lacks something.
+// What was left out and why — to check afterwards whether the reading lacks
+// something. Pages of books not in the library apart: those are no fault.
 let goneShown=-1;
-function showGone(gone){
- if(gone.length===goneShown)return;goneShown=gone.length;
- $('gone').hidden=!gone.length;$('goneTitle').textContent=`Left out (${gone.length})`;
- $('goneList').replaceChildren(...gone.map(g=>{
-  const li=document.createElement('li'),a=document.createElement('a');
-  a.href=g.u||g;a.target='_blank';a.rel='noopener';a.textContent=g.t||g.u||g;
-  li.append(a,document.createTextNode(g.why?' — '+g.why:''));return li;
- }));
- $('copyGone').onclick=()=>navigator.clipboard.writeText(gone.map(g=>[g.t,g.s,g.u||g,g.why].filter(Boolean).join(' | ')).join('\n'));
+function showGone(all){
+ if(all.length===goneShown)return;goneShown=all.length;
+ const list=(id,title,gone,why)=>{
+  $(id).hidden=!gone.length;$(id+'Title').textContent=`${title} (${gone.length})`;
+  $(id+'List').replaceChildren(...gone.map(g=>{
+   const li=document.createElement('li'),a=document.createElement('a');
+   a.href=g.u||g;a.target='_blank';a.rel='noopener';a.textContent=g.t||g.u||g;
+   li.append(a,document.createTextNode(why&&g.why?' — '+g.why:''));return li;
+  }));
+  $('copy'+id[0].toUpperCase()+id.slice(1)).onclick=()=>navigator.clipboard.writeText(gone.map(g=>[g.t,g.s,g.u||g,g.why].filter(Boolean).join(' | ')).join('\n'));
+ };
+ list('gone','Left out',all.filter(g=>!g.unowned),true);
+ // All alike — the shop or the start page — so only their names.
+ list('unowned','Not in your library',all.filter(g=>g.unowned),false);
 }
 $('world').onchange=()=>{world=$('world').value;$('error').textContent='';check();};
 $('go').onclick=async()=>{

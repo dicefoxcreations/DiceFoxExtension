@@ -157,8 +157,8 @@ async function liveExpected(job,selected,lists){
   return out;
 }
 function liveTotals(receipts){
-  const totals={new:0,known:0,updated:0,gone:0,images:0,missingImages:0};
-  for(const receipt of receipts){if(!receipt)continue;const r=receipt.result||{};if(receipt.gone)totals.gone++;
+  const totals={new:0,known:0,updated:0,gone:0,unowned:0,images:0,missingImages:0};
+  for(const receipt of receipts){if(!receipt)continue;const r=receipt.result||{};if(receipt.unowned)totals.unowned++;else if(receipt.gone)totals.gone++;
     totals.new+=r.documents_new||0;totals.known+=r.documents_known||0;totals.updated+=r.documents_updated||0;
     totals.images+=Math.max(0,(r.images_new||0)-(r.images_skipped?.length||0));totals.missingImages+=receipt.missingImages||0;
   }
@@ -214,7 +214,7 @@ async function liveRun(job,selected,chosen){
     return {done:job.entries.filter(e=>receipts.has(String(e.i))).length,total:job.entries.length,coming,final:rows.every(l=>l.listed),totals:liveTotals(receipts.values()),lists:rows};
   };
   const checkpoint=async(key,result,entry)=>{
-    const receipt={result:result.result,missingImages:result.missingImages||0,...(entry?.s==='classes'?{bindings:result.bindings}:{}),...(result.gone?{gone:true}:{})};
+    const receipt={result:result.result,missingImages:result.missingImages||0,...(entry?.s==='classes'?{bindings:result.bindings}:{}),...(result.gone?{gone:true}:{}),...(result.unowned?{unowned:true}:{})};
     await chrome.storage.local.set({[liveAck(job.id,key)]:receipt});
     receipts.set(String(key),receipt);if(result.bindings)bindings=result.bindings;
     await liveSave(standing());
@@ -250,10 +250,12 @@ async function liveRun(job,selected,chosen){
     // read again, or when the export ends; tried again if it pauses.
     let missed=[],lastRead=null;
     const leaveOut=async()=>{
-      for(const {entry,failure} of missed){
+      for(const {entry,failure,there} of missed){
         // Kept with the job, shown in the export dialog: to see afterwards what was left out and why.
-        job.gone=[...(job.gone||[]),{u:entry.u,t:entry.t,s:entry.s,why:failure,at:Date.now()}];log('Left out: '+entry.u+' — '+failure);
-        await checkpoint(entry.i,{result:{},gone:true},entry);
+        // Led to the shop or the start page: not in this account's library — no fault of the reading.
+        const unowned=!!there&&LWLUrl.matchesAny(there,selected.unavailableUrlPatterns);
+        job.gone=[...(job.gone||[]),{u:entry.u,t:entry.t,s:entry.s,why:failure,...(unowned?{unowned:true}:{}),at:Date.now()}];log('Left out: '+entry.u+' — '+failure);
+        await checkpoint(entry.i,{result:{},gone:true,...(unowned?{unowned:true}:{})},entry);
       }
       if(missed.length)await chrome.storage.local.set({[LIVE_JOB]:job});
       missed=[];
@@ -279,7 +281,7 @@ async function liveRun(job,selected,chosen){
           // elsewhere — is left out. Several in a row may be the sign-in:
           // the last page read is read again to see. Read, it was those pages;
           // not read, the export pauses and they are tried again later.
-          missed.push({entry,failure});
+          missed.push({entry,failure,there:result?.finalUrl||landed});
           if(missed.length>=MISSES){
             const check=lastRead?await liveRead(lastRead.u,lastRead.message,{fresh:true}).catch(()=>null):null;
             const read=check?.ok&&(check.page||check.detail)?.html?.trim();
