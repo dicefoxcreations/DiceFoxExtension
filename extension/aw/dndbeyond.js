@@ -448,7 +448,8 @@
       const kind = m ? kindOfEquipment(m[1]) : 'gear';
       if (m) {
         // Each kind its own list of categories — a weapon's, an armor's, gear's.
-        fields.Category = dataDoc('Equipment category', m[1], CATEGORY_OF[kind] || 'equipment-category');
+        // A potion has none: what it is, its type says.
+        if (fieldOf(kind, 'Category')) fields.Category = dataDoc('Equipment category', m[1], CATEGORY_OF[kind] || 'equipment-category');
         fields.Cost = m[2];
         fields.Weight = m[3];
         text = text.split('\n').slice(1).join('\n').trim();
