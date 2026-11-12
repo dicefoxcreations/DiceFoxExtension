@@ -156,6 +156,30 @@ async function liveExpected(job,selected,lists){
   }
   return out;
 }
+/* Pages of books not in the library, remembered per profile with the library
+   they were found against: the next export leaves them out without reading
+   them — until the library holds a book it did not, or pages are fetched
+   anew. Without a library to tell, nothing is remembered or left out. */
+const liveUnownedKey=profileId=>`dicefox:unowned:${profileId}`;
+async function liveLibrary(selected){
+  const source=(selected.sources||[]).find(s=>s.type==='collection');
+  if(!source)return null;
+  try{const {items}=await selectionCatalogGet(selected.id,source.id);return items?.length?items.map(item=>item.url):null;}
+  catch{return null;}
+}
+async function liveUnowned(selected,fresh){
+  const key=liveUnownedKey(selected.id),saved=(await chrome.storage.local.get(key))[key],library=await liveLibrary(selected);
+  const known=new Set(saved?.library||[]);
+  // A book new to the library may hold any of them: all are read again.
+  const current=!!library&&!!saved&&library.every(url=>known.has(url));
+  const pages=new Set(current?saved.pages:[]);let changed=false;
+  return {
+    has:url=>!!library&&!fresh&&pages.has(url),
+    add(url){if(library&&!pages.has(url)){pages.add(url);changed=true;}},
+    drop(url){if(pages.delete(url))changed=true;},
+    async save(){if(!changed||!library)return;await chrome.storage.local.set({[key]:{library,pages:[...pages],at:Date.now()}});changed=false;}
+  };
+}
 function liveTotals(receipts){
   const totals={new:0,known:0,updated:0,gone:0,unowned:0,images:0,missingImages:0};
   for(const receipt of receipts){if(!receipt)continue;const r=receipt.result||{};if(receipt.unowned)totals.unowned++;else if(receipt.gone)totals.gone++;
@@ -206,7 +230,7 @@ async function liveStart(msg){
 }
 async function liveRun(job,selected,chosen){
   const receipts=new Map(),lists=liveLists(chosen);let bindings={};liveTabKinds=new Set();
-  let expected={};
+  let expected={},unowned=null;
   const standing=()=>{
     const rows=liveStanding(job,lists,receipts,expected);
     // The whole: what is queued, and what the lists still to be read will bring.
@@ -227,6 +251,7 @@ async function liveRun(job,selected,chosen){
     for(const key of keys)if(saved[liveAck(job.id,key)])receipts.set(String(key),saved[liveAck(job.id,key)]);
     for(const entry of job.entries)if(entry.s==='classes'&&receipts.get(String(entry.i))?.bindings)bindings=receipts.get(String(entry.i)).bindings;
     expected=await liveExpected(job,selected,lists);
+    unowned=await liveUnowned(selected,job.fresh);
     await liveSave(standing());
     const glossary=[];
     for(const source of chosen.filter(s=>s.type==='glossary')){
@@ -248,17 +273,18 @@ async function liveRun(job,selected,chosen){
     // already is not read again, unless asked to.
     // Pages not read in the current run of failures — left out once one is
     // read again, or when the export ends; tried again if it pauses.
-    let missed=[],lastRead=null;
+    let missed=[],lastRead=null,goneAdded=false;
     const leaveOut=async()=>{
       for(const {entry,failure,there} of missed){
         // Kept with the job, shown in the export dialog: to see afterwards what was left out and why.
         // Led to the shop or the start page: not in this account's library — no fault of the reading.
-        const unowned=!!there&&LWLUrl.matchesAny(there,selected.unavailableUrlPatterns);
-        job.gone=[...(job.gone||[]),{u:entry.u,t:entry.t,s:entry.s,why:failure,...(unowned?{unowned:true}:{}),at:Date.now()}];log('Left out: '+entry.u+' — '+failure);
-        await checkpoint(entry.i,{result:{},gone:true,...(unowned?{unowned:true}:{})},entry);
+        const shop=!!there&&LWLUrl.matchesAny(there,selected.unavailableUrlPatterns);
+        job.gone=[...(job.gone||[]),{u:entry.u,t:entry.t,s:entry.s,why:failure,...(shop?{unowned:true}:{}),at:Date.now()}];log('Left out: '+entry.u+' — '+failure);
+        if(shop)unowned.add(entry.u);
+        await checkpoint(entry.i,{result:{},gone:true,...(shop?{unowned:true}:{})},entry);
       }
-      if(missed.length)await chrome.storage.local.set({[LIVE_JOB]:job});
-      missed=[];
+      if(missed.length||goneAdded)await chrome.storage.local.set({[LIVE_JOB]:job});
+      missed=[];goneAdded=false;
     };
     const liveImport=async()=>{
       const open=job.entries.filter(e=>!receipts.has(String(e.i))).map(e=>e.i);
@@ -267,6 +293,11 @@ async function liveRun(job,selected,chosen){
         const entry=job.entries[cursor];if(stopRequested)throw Error('Export paused.');
         if(receipts.has(String(entry.i))||missed.some(m=>m.entry.i===entry.i))continue;
         if(there.has(entry.i)){await checkpoint(entry.i,{result:{documents_known:1}},entry);continue;}
+        // Not in the library when last read: left out unread, the job written with the next.
+        if(unowned.has(entry.u)){
+          job.gone=[...(job.gone||[]),{u:entry.u,t:entry.t,s:entry.s,why:'Not in your library',unowned:true,at:Date.now()}];goneAdded=true;
+          await checkpoint(entry.i,{result:{},gone:true,unowned:true},entry);continue;
+        }
         const source=chosen.find(s=>s.id===entry.sourceId),book=job.books.find(b=>b.id===entry.book);
         const captureSource={...capturedSource(source),appExport:true,...(book?{collectionRoot:book.url}:{})};
         await liveSave({current:entry.t,kind:entry.s,error:null});
@@ -290,7 +321,7 @@ async function liveRun(job,selected,chosen){
           }
           continue;
         }
-        await leaveOut();
+        await leaveOut();unowned.drop(entry.u);
         lastRead={u:entry.u,message:{type:entry.book?'EXTRACT_PAGE':'EXTRACT_DETAIL',source:captureSource}};
         if(ownChapter){
           entry.a=[...new Set([...(entry.a||[]),landed])];
@@ -319,14 +350,14 @@ async function liveRun(job,selected,chosen){
         // HTML and image package now become unreachable and can be collected.
       }
     };
-    await liveImport();
+    await liveImport();await unowned.save();
     for(const source of lists){
       if(job.listed.includes(source.id))continue;
       await liveList(job,selected,source,lists);
       for(const entry of job.entries)seen.add(entry.u);
       await liveCall('AW_LIVE_INDEX',{entries:job.entries,bookRoots:job.books,glossary,bindings,pending:pending(),whole:whole,extend:true});
       await liveSave(standing());
-      await liveImport();
+      await liveImport();await unowned.save();
     }
     // Fewer than MISSES at the end: those pages, not the sign-in.
     await leaveOut();
@@ -336,6 +367,8 @@ async function liveRun(job,selected,chosen){
     await liveSave({status:'complete',current:'Export complete.',kind:null,error:null});
   }catch(error){await liveSave({status:'paused',error:stopRequested?'Export paused. Confirmed entries are retained.':String(error.message||error)});}
   finally{
+    // What was learnt of the library, also when the export pauses.
+    try{await unowned?.save();}catch(error){log('Not remembered: '+(error.message||error));}
     try{await liveCall('AW_LIVE_DROP');}catch{/* offscreen disconnected */}
     state.running=false;liveActive=false;busy=false;
     try{await closeCrawlWindow();}finally{await closeOffscreenIfIdle();}
