@@ -159,7 +159,9 @@ async function liveExpected(job,selected,lists){
 /* Pages of books not in the library, remembered per profile with the library
    they were found against: the next export leaves them out without reading
    them — until the library holds a book it did not, or pages are fetched
-   anew. Without a library to tell, nothing is remembered or left out. */
+   anew. Without a library to tell, nothing is left out; what is found is
+   remembered with the library as it stands when saved — the export may read
+   the library itself only after it began. */
 const liveUnownedKey=profileId=>`dicefox:unowned:${profileId}`;
 async function liveLibrary(selected){
   const source=(selected.sources||[]).find(s=>s.type==='collection');
@@ -168,16 +170,21 @@ async function liveLibrary(selected){
   catch{return null;}
 }
 async function liveUnowned(selected,fresh){
-  const key=liveUnownedKey(selected.id),saved=(await chrome.storage.local.get(key))[key],library=await liveLibrary(selected);
-  const known=new Set(saved?.library||[]);
-  // A book new to the library may hold any of them: all are read again.
-  const current=!!library&&!!saved&&library.every(url=>known.has(url));
-  const pages=new Set(current?saved.pages:[]);let changed=false;
+  const key=liveUnownedKey(selected.id),saved=(await chrome.storage.local.get(key))[key];
+  // A book new to the library may hold any of those found before: all are read again.
+  const holds=library=>!!library&&!!saved&&library.every(url=>(saved.library||[]).includes(url));
+  const library=await liveLibrary(selected),before=new Set(holds(library)?saved.pages:[]),found=new Set();let changed=false;
   return {
-    has:url=>!!library&&!fresh&&pages.has(url),
-    add(url){if(library&&!pages.has(url)){pages.add(url);changed=true;}},
-    drop(url){if(pages.delete(url))changed=true;},
-    async save(){if(!changed||!library)return;await chrome.storage.local.set({[key]:{library,pages:[...pages],at:Date.now()}});changed=false;}
+    has:url=>!fresh&&before.has(url),
+    add(url){if(!found.has(url)){found.add(url);changed=true;}},
+    drop(url){if(before.delete(url)|found.delete(url))changed=true;},
+    async save(){
+      if(!changed)return;
+      const now=await liveLibrary(selected);if(!now)return;
+      // Found in this export: not in the library as it is now. From before: only while it holds no new book.
+      const pages=[...new Set([...(holds(now)?before:[]),...found])];
+      await chrome.storage.local.set({[key]:{library:now,pages,at:Date.now()}});changed=false;
+    }
   };
 }
 function liveTotals(receipts){
