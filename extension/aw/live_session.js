@@ -33,32 +33,44 @@
      what it reads at once, and within what it hands on to a world's server
      in one message (64 MB, the pictures there as base64). The app names a
      picture by its bytes, so the document finds it there. */
-  const BATCH=24*1024*1024;
+  const BATCH=24*1024*1024,PICTURE_RETRY=2000;
   async function pictures(docs,ahead){
     const s=alive(),images=new Map(),cache=new Map();let files={},bytes=0,missing=0;
+    // A picture that does not come at once is asked for once more, a little later:
+    // a site busy for a moment leaves no hole. One it does not have is not asked again.
+    const load=async url=>{
+      for(let attempt=0;;attempt++){
+        const controller=new AbortController(),abort=()=>controller.abort(),timer=setTimeout(abort,20000);
+        s.abort.signal.addEventListener('abort',abort,{once:true});
+        let lacking=false;
+        try{
+          const response=await fetch(url,{credentials:'omit',signal:controller.signal});
+          if(response.ok){const blob=await response.blob();if(blob.size)return blob;}
+          lacking=response.status===404||response.status===410;
+        }catch{}
+        finally{clearTimeout(timer);s.abort.signal.removeEventListener('abort',abort);}
+        alive();
+        if(lacking||attempt>=1)return null;
+        await new Promise(resolve=>setTimeout(resolve,PICTURE_RETRY));alive();
+      }
+    };
     const picture=async url=>{
       if(cache.has(url))return cache.get(url);
       alive();let made=null;
-      const controller=new AbortController(),abort=()=>controller.abort(),timer=setTimeout(abort,20000);
-      s.abort.signal.addEventListener('abort',abort,{once:true});
       try{
-        const response=await fetch(url,{credentials:'omit',signal:controller.signal});
-        if(response.ok){
-          const blob=await response.blob();
+        const blob=await load(url);
+        if(blob){
           if(bytes&&bytes+blob.size>BATCH){
             await ahead([...images.values()].filter(i=>files[i.file]),files);
             for(const sent of cache.values())if(sent&&files[sent.file])sent.data=null;
             files={};bytes=0;
           }
-          if(blob.size){
-            const data=new Uint8Array(await blob.arrayBuffer()),id=AWIds.imageId(data);
-            const ext=imageExtensions[blob.type.split(';')[0]]||'img';let binary='';
-            for(let i=0;i<data.length;i+=0x8000)binary+=String.fromCharCode.apply(null,data.subarray(i,i+0x8000));
-            made={id,file:`images/${id.slice(4)}.${ext}`,data:btoa(binary)};bytes+=blob.size;
-          }
+          const data=new Uint8Array(await blob.arrayBuffer()),id=AWIds.imageId(data);
+          const ext=imageExtensions[blob.type.split(';')[0]]||'img';let binary='';
+          for(let i=0;i<data.length;i+=0x8000)binary+=String.fromCharCode.apply(null,data.subarray(i,i+0x8000));
+          made={id,file:`images/${id.slice(4)}.${ext}`,data:btoa(binary)};bytes+=blob.size;
         }
       }catch(error){if(/Export paused|^App:/.test(error.message))throw error;}
-      finally{clearTimeout(timer);s.abort.signal.removeEventListener('abort',abort);}
       alive();cache.set(url,made);return made;
     };
     const remember=(pic,name)=>{images.set(pic.id,{id:pic.id,file:pic.file,name});if(pic.data)files[pic.file]=pic.data;};
