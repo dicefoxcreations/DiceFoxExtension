@@ -195,6 +195,15 @@ function liveTotals(receipts){
   }
   return totals;
 }
+// A new export cannot resume the one before: its receipts go, and selections expired.
+async function liveForget(id){
+  try{
+    const keys=await chrome.storage.local.getKeys(),drafts=keys.filter(k=>k.startsWith('dicefox:export-draft:')&&k!=='dicefox:export-draft:'+id);
+    const saved=drafts.length?await chrome.storage.local.get(drafts):{};
+    const stale=[...keys.filter(k=>k.startsWith('dicefox:live-ack:')&&!k.startsWith(`dicefox:live-ack:${id}:`)),...drafts.filter(k=>!(Date.now()-saved[k]?.createdAt<=24*60*60*1000))];
+    for(let i=0;i<stale.length;i+=1000)await chrome.storage.local.remove(stale.slice(i,i+1000));
+  }catch(error){log('Old receipts kept: '+(error.message||error));}
+}
 async function liveStart(msg){
   if(liveActive||running||busy||pageTasksActive||pageCommandsActive)throw Error('Another task is running. Wait for it to finish.');
   busy=true;liveStartingId=msg.exportId;stopRequested=false;
@@ -228,6 +237,7 @@ async function liveStart(msg){
     const initialProgress={id:job.id,status:'running',done:0,total:job.entries.length,current:'Preparing export…',totals:{new:0,known:0,images:0,missingImages:0},error:null};
     await chrome.alarms.create('lwl-heartbeat',{periodInMinutes:0.5});
     await chrome.storage.local.set({[LIVE_JOB]:job,[LIVE_PROGRESS]:initialProgress});
+    if(!msg.resume)await liveForget(job.id);
     liveJob=job;liveProgress=initialProgress;liveActive=true;
     liveStartingId=null;
     state.running=true;state.exportId=job.id;state.profileId=selected.id;state.sourceIds=job.sourceIds;
